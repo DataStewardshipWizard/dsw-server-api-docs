@@ -1,2 +1,3 @@
-# dsw-server-api-docs
-DSW Server API Docs
+# Data Stewardship Wizard - Server API Docs
+
+[![License](https://img.shields.io/badge/license-Apache%202-blue.svg)](LICENSE.md)
