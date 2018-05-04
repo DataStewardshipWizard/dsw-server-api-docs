@@ -1,0 +1,131 @@
+FORMAT: 1A
+HOST: http://private-6f6d1-dsw.apiary-mock.com
+
+# DSW Server API Docs
+
+## Questionnaires Collection [/questionnaires]
+
+### List All Questionnaires [GET]
+
+- **Required permissions:** QTN_PERM
+
++ Response 200 (application/json)
+
+        [
+            {
+                "uuid": "521ba33b-10cf-4829-bbe1-90ea06a68f4f",
+                "name": "My First Wizard",
+                "package": {
+                    "id": "elixir.nl:core-nl:2.0.0",
+                    "name": "Elixir Netherlands",
+                    "groupId": "elixir.nl",
+                    "artifactId": "core-nl",
+                    "version": "2.0.0",
+                    "description": "Updated experts",
+                    "parentPackageId": "elixir:core:2.0.0"
+                }
+            }
+        ]
+
+### Create a New Questionnaire [POST]
+
+- **Required permissions:** QTN_PERM
+
++ Request (application/json)
+
+        {
+            "name": "My First Wizard",
+            "packageId": "elixir.nl:core-nl:2.0.0"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "uuid": "521ba33b-10cf-4829-bbe1-90ea06a68f4f",
+            "name": "My First Wizard",
+            "package": {
+                "id": "elixir.nl:core-nl:2.0.0",
+                "name": "Elixir Netherlands",
+                "groupId": "elixir.nl",
+                "artifactId": "core-nl",
+                "version": "2.0.0",
+                "description": "Updated experts",
+                "parentPackageId": "elixir:core:2.0.0"
+            }
+        }
+
+### Get detail of Questionnaire [GET /questionnaires/{questionnaireUuid}]
+
+- **Required permissions:** QTN_PERM
+
++ Parameters
+    + questionnaireUuid (string) ... UUID of the questionnaire
+
++ Response 200 (application/json)
+
+        {
+            "uuid": "521ba33b-10cf-4829-bbe1-90ea06a68f4f",
+            "name": "My First Wizard",
+            "package": {
+                "id": "elixir.nl:core-nl:2.0.0",
+                "name": "Elixir Netherlands",
+                "groupId": "elixir.nl",
+                "artifactId": "core-nl",
+                "version": "2.0.0",
+                "description": "Updated experts",
+                "parentPackageId": "elixir:core:2.0.0"
+            },
+            "knowledgeModel": {
+                "uuid": "ff672529-e837-4201-b7b1-7ada557d9725",
+                "name": "My Knowledge Model",
+                "chapters": [
+                    {
+                        "text": "Looong long text",
+                        "uuid": "e3c4b314-919b-418d-bb85-a07c97433427",
+                        "questions": [],
+                        "title": "Design of experiment"
+                    },
+                    {
+                        "text": "Some long text",
+                        "uuid": "ca46cd40-3999-4f0d-a8ba-15d57682dfeb",
+                        "questions": [],
+                        "title": "Testing"
+                    }
+                ]
+            },
+            "replies": {
+                "chapter1.question1.answer1": "foo" ,
+                "chapter1.question1.answer2": "bar" 
+            }
+        }
+        
+        
+### Update replies of Questionnaire [PUT /questionnaires/{questionnaireUuid}/replies]
+
+- **Required permissions:** QTN_PERM
+
++ Parameters
+    + questionnaireUuid (string) ... UUID of the questionnaire
+    
++ Request (application/json)
+
+        {
+            "chapter1.question1.answer1": "foo",
+            "chapter1.question1.answer2": "bar"
+        }
+
++ Response 200 (application/json)
+
+        {
+            "chapter1.question1.answer1": "foo",
+            "chapter1.question1.answer2": "bar"
+        }
+        
+### Delete detail of Questionnaire [DELETE /questionnaires/{questionnaireUuid}]
+
+- **Required permissions:** QTN_PERM
+
++ Parameters
+    + questionnaireUuid (string) ... UUID of the questionnaire
+    
++ Response 204
