@@ -3,9 +3,93 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 # DSW Server API Docs
 
-## Questionnaires Collection [/questionnaires]
+## Group Info
 
-### List All Questionnaires [GET]
+### Info Endpoint [/info]
+
+#### Get information about running application [GET]
+
++ Response 200 (application/json)
+
+        {
+            "name": "Data Stewardship Wizard Server",
+            "version": "1.0.0",
+            "builtAt": "2017/10/25 19:50:20Z"
+        }
+
+## Group Token
+
+### Token Endpoint [/tokens]
+
+#### Get token [POST]
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+
++ Request (application/json)
+            
+        {
+            "email": "john.doe@example.com",
+            "password": "password"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "token": "jij23ioin23.br34htjdsuis.df789323n23jn2"
+        }
+
+## Group Organization
+
+### Organization Current [/organizations/current]
+
+#### Get Current Organization [GET]
+
+- **Possible failures:**
+  - HTTP 401
+
++ Request (application/json)
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (Organization)
+        
+
+#### Change Current Organization [PUT]
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+    - GroupId is not in valid format
+  - HTTP 401
+  - HTTP 403
+    - You don’t have ORG_PERM permission
+
++ Request (application/json)
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+    
+    + Attributes (Organization)
+        
+
++ Response 200 (application/json)
+
+    + Attributes (array[Organization])
+        
+## Group Questionnaires
+
+### Questionnaires Collection [/questionnaires]
+
+#### List All Questionnaires [GET]
 
 - **Required permissions:** QTN_PERM
 
@@ -27,7 +111,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
             }
         ]
 
-### Create a New Questionnaire [POST]
+#### Create a New Questionnaire [POST]
 
 - **Required permissions:** QTN_PERM
 
@@ -54,7 +138,9 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
             }
         }
 
-### Get detail of Questionnaire [GET /questionnaires/{questionnaireUuid}]
+### Questionnaire [/questionnaires/{questionnaireUuid}]
+
+#### Get detail of Questionnaire [GET]
 
 - **Required permissions:** QTN_PERM
 
@@ -100,7 +186,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
         }
         
         
-### Update replies of Questionnaire [PUT /questionnaires/{questionnaireUuid}/replies]
+#### Update replies of Questionnaire [PUT /questionnaires/{questionnaireUuid}/replies]
 
 - **Required permissions:** QTN_PERM
 
@@ -121,7 +207,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
             "chapter1.question1.answer2": "bar"
         }
         
-### Delete detail of Questionnaire [DELETE /questionnaires/{questionnaireUuid}]
+#### Delete detail of Questionnaire [DELETE]
 
 - **Required permissions:** QTN_PERM
 
@@ -129,3 +215,13 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     + questionnaireUuid (string) ... UUID of the questionnaire
     
 + Response 204
+
+
+
+# Data Structures
+
+## Organization (object)
+
++ uuid: d0619a24db8a48e1a0330d4ef8b8da78 (string)
++ name: Elixir Amsterdam (string)
++ groupId: elixir.nl.amsterdam (string)
