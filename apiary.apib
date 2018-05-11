@@ -84,6 +84,256 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + Response 200 (application/json)
 
     + Attributes (array[Organization])
+
+## Group Users
+
+### Users Collection [/users]
+
+#### List All Users [GET]
+
+- **Required permissions:** UM_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have UM_PERM permission
+
++ Request
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (array[User])
+
+#### Registrate/Create user [POST]
+
+- **Required permissions:** UM_PERM (Just for creation, not registration)
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+    - User with email 'albert.einstein@example.com' already exists
+  - HTTP 401 (Just for creation, not registration)
+  - HTTP 403
+    - You don’t have UM_PERM permission (Just for creation, not registration)
+
++ Request (application/json)
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
+    + Attributes (UserRegistration)
+    
++ Response 201 (application/json)
+
+    + Attributes (User)
+
++ Request (application/json)
+
+    + Attributes (UserCreate)
+    
++ Response 201 (application/json)
+
+    + Attributes (User)
+
+    
+### User [/users/{userUuid}]
+
+#### Get user [GET]
+
+- **Required permissions:** UM_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have UM_PERM permission
+  - HTTP 404
+    - User doesn't exist
+    
++ Parameters
+    + userUuid: 2j3hj4 (string) ... UUID of the User
+    
++ Request
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+    
++ Response 200
+
+    + Attributes (User)
+
+#### Modify user [PUT]
+
+- **Required permissions:** UM_PERM
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+    - User with email 'albert.einstein@example.com' already exists
+  - HTTP 401
+  - HTTP 403
+    - You don’t have UM_PERM permission
+  - HTTP 404
+    - User doesn't exist
+    
++ Parameters
+    + userUuid: 2j3hj4 (string) ... UUID of the User
+    
++ Request (application/json)
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
+    + Attributes (UserChange)    
+    
++ Response 200
+
+    + Attributes (User)
+
+#### Activate user [PUT /users/{userUuid}/state]
+
+- **Required permissions:** UM_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have UM_PERM permission
+  - HTTP 404
+    - User doesn't exist
+
++ Parameters
+    + userUuid: 2j3hj4 (string) ... UUID of the User
+    
++ Request (application/json)
+
+    + Attributes (UserChange)    
+    
++ Response 200
+
+    + Attributes (User)
+
+#### Change password [PUT /users/{userUuid}/password]
+
+- **Required permissions:** UM_PERM
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+    - You have to log in as Administrator or you have to provide a hash in query param
+  - HTTP 401
+  - HTTP 403
+    - You don’t have UM_PERM permission
+  - HTTP 404
+    - User doesn't exist
+    
++ Parameters
+    + userUuid: 2j3hj4 (string) ... UUID of the User
+    
++ Request (application/json)
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
+    + Attributes (UserPasswordChange)    
+    
++ Response 204
+
+#### Reset forgotten password [PUT /users/{userUuid}/password{?hash}]
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+    - You have to log in as Administrator or you have to provide a hash in query param
+    - Hash query param has to be provided
+  - HTTP 404
+    - User doesn't exist
+    
++ Parameters
+    + userUuid: 2j3hj4 (string) ... UUID of the User
+    + hash: h53j1jb (string) ... Random generated hash, provided in email
+    
++ Request (application/json)
+
+    + Attributes (UserPasswordChange)    
+    
++ Response 204
+
+#### Delete user [DELETE]
+
+- **Required permissions:** UM_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have UM_PERM permission
+  - HTTP 404
+    - User doesn't exist
+    
++ Parameters
+    + userUuid: 2j3hj4 (string) ... UUID of the User
+
++ Request
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 204
+
+### User Current [/users/current]
+
+#### Modify profile [PUT]
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+    - User with email 'albert.einstein@example.com' already exists
+  - HTTP 401
+    
++ Request (application/json)
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
+    + Attributes (UserProfileChange)    
+    
++ Response 200
+
+    + Attributes (User)
+
+#### Change password for current user [PUT /users/current/password]
+
+- **Required permissions:** UM_PERM
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+  - HTTP 401
+
++ Request (application/json)
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
+    + Attributes (UserPasswordChange)    
+    
++ Response 204
+
         
 ## Group Questionnaires
 
@@ -225,3 +475,48 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + uuid: d0619a24db8a48e1a0330d4ef8b8da78 (string)
 + name: Elixir Amsterdam (string)
 + groupId: elixir.nl.amsterdam (string)
+
+## User (object)
+
++ uuid: 3ef960678e7a479eae181be47f0e2a5d (string)
++ name: Albert (string)
++ surname: Einstein (string)
++ email: albert.einstein@example.com (string)
++ role: ADMIN (string)
++ permissions: [UM_PERM, PM_PERM] (array[string])
++ isActive: true (boolean)
+
+## UserRegistration (object)
+
++ name: Albert (string)
++ surname: Einstein (string)
++ email: albert.einstein@example.com (string)
++ password: aijio2jiasjdias (string)
+
+## UserCreate (object)
+
++ name: Albert (string)
++ surname: Einstein (string)
++ email: albert.einstein@example.com (string)
++ role: ADMIN (string)
++ password: aijio2jiasjdias (string)
+
+## UserChange (object)
+
++ uuid: 3ef960678e7a479eae181be47f0e2a5d (string)
++ name: Albert (string)
++ surname: Einstein (string)
++ email: albert.einstein@example.com (string)
++ role: ADMIN (string)
++ isActive: true (boolean)
+
+## UserProfileChange (object)
+
++ uuid: 3ef960678e7a479eae181be47f0e2a5d (string)
++ name: Albert (string)
++ surname: Einstein (string)
++ email: albert.einstein@example.com (string)
+
+## UserPasswordChange (object)
+
++ password: aijio2jiasjdias (string)
