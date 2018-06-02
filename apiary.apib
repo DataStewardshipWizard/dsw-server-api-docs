@@ -430,8 +430,8 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
                 ]
             },
             "replies": {
-                "chapter1.question1.answer1": "foo" ,
-                "chapter1.question1.answer2": "bar" 
+                { "path": "chapter1.question1.answer1", "value": "foo"},
+                { "path": "chapter1.question1.answer2", "value": "bar"}
             }
         }
         
@@ -445,17 +445,11 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     
 + Request (application/json)
 
-        {
-            "chapter1.question1.answer1": "foo",
-            "chapter1.question1.answer2": "bar"
-        }
+    + Attributes (QuestionnaireReply)
 
 + Response 200 (application/json)
 
-        {
-            "chapter1.question1.answer1": "foo",
-            "chapter1.question1.answer2": "bar"
-        }
+    + Attributes (QuestionnaireReply)
         
 #### Delete detail of Questionnaire [DELETE]
 
@@ -485,6 +479,8 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + role: ADMIN (string)
 + permissions: [UM_PERM, PM_PERM] (array[string])
 + isActive: true (boolean)
++ createdAt: 2018-03-11T10:13:51+00:00 (datetime)
++ updatedAt: 2018-05-11T10:13:51+00:00 (datetime)
 
 ## UserRegistration (object)
 
@@ -520,3 +516,8 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 ## UserPasswordChange (object)
 
 + password: aijio2jiasjdias (string)
+
+## QuestionnaireReply (object)
+
++ path: i1j3io131j23i1j.i1j3io131j23i1j.i1j3io131j23i1j.0.itemName (string)
++ value: MongoDB (string)
