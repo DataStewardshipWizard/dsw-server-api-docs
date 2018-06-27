@@ -450,16 +450,31 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + Response 200 (application/json)
 
     + Attributes (QuestionnaireReply)
-        
-#### Delete detail of Questionnaire [DELETE]
 
-- **Required permissions:** QTN_PERM
 
+#### Export replies of Questionnaire [GET /questionnaires/{questionnaireUuid}/dmp{?format}]
+    
 + Parameters
     + questionnaireUuid (string) ... UUID of the questionnaire
-    
-+ Response 204
+    + format: pdf (string) ... One of supported formats - json, html, docx, pdf
 
++ Response 200 (application/octet-stream)
+
+## Group Book References
+
+### Book Reference [/book-references/{brShortUuid}]
+
+#### Get detail of Questionnaire [GET]
+
+- **Possible failures:**
+  - HTTP 404
+  
++ Parameters
+    + brShortUuid (string) ... Short uuid of book reference
+
++ Response 200 (application/json)
+
+    + Attributes (BookReference)
 
 
 # Data Structures
@@ -521,3 +536,8 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 + path: i1j3io131j23i1j.i1j3io131j23i1j.i1j3io131j23i1j.0.itemName (string)
 + value: MongoDB (string)
+
+## BookReference (object)
+
++ shortUuid: bvq (string)
++ content: <div>Some HTML content</div> (string)
