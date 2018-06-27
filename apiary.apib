@@ -388,20 +388,15 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
             }
         }
 
-### Questionnaire [/questionnaires/{questionnaireUuid}]
+### Questionnaire Public [/questionnaires/public]
 
-#### Get detail of Questionnaire [GET]
-
-- **Required permissions:** QTN_PERM
-
-+ Parameters
-    + questionnaireUuid (string) ... UUID of the questionnaire
+#### Get public example ofquestionnaire [GET]
 
 + Response 200 (application/json)
 
         {
-            "uuid": "521ba33b-10cf-4829-bbe1-90ea06a68f4f",
-            "name": "My First Wizard",
+            "uuid": "0509da0e-e79f-4d56-845e-2468f8b33f09",
+            "name": "Public Questionnaire",
             "package": {
                 "id": "elixir.nl:core-nl:2.0.0",
                 "name": "Elixir Netherlands",
@@ -429,13 +424,58 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
                     }
                 ]
             },
-            "replies": {
-                { "path": "chapter1.question1.answer1", "value": "foo"},
-                { "path": "chapter1.question1.answer2", "value": "bar"}
-            }
+            "replies": []
         }
         
         
+### Questionnaire [/questionnaires/{questionnaireUuid}]
+
+#### Get detail of Questionnaire [GET]
+
+- **Required permissions:** QTN_PERM
+
++ Parameters
+    + questionnaireUuid (string) ... UUID of the questionnaire
+
++ Response 200 (application/json)
+
+        {
+            "uuid": "521ba33b-10cf-4829-bbe1-90ea06a68f4f",
+            "name": "My First Questionnaire",
+            "package": {
+                "id": "elixir.nl:core-nl:2.0.0",
+                "name": "Elixir Netherlands",
+                "groupId": "elixir.nl",
+                "artifactId": "core-nl",
+                "version": "2.0.0",
+                "description": "Updated experts",
+                "parentPackageId": "elixir:core:2.0.0"
+            },
+            "knowledgeModel": {
+                "uuid": "ff672529-e837-4201-b7b1-7ada557d9725",
+                "name": "My Knowledge Model",
+                "chapters": [
+                    {
+                        "text": "Looong long text",
+                        "uuid": "e3c4b314-919b-418d-bb85-a07c97433427",
+                        "questions": [],
+                        "title": "Design of experiment"
+                    },
+                    {
+                        "text": "Some long text",
+                        "uuid": "ca46cd40-3999-4f0d-a8ba-15d57682dfeb",
+                        "questions": [],
+                        "title": "Testing"
+                    }
+                ]
+            },
+            "replies": [
+                { "path": "chapter1.question1.answer1", "value": "foo"},
+                { "path": "chapter1.question1.answer2", "value": "bar"}
+            ]
+        }
+        
+
 #### Update replies of Questionnaire [PUT /questionnaires/{questionnaireUuid}/replies]
 
 - **Required permissions:** QTN_PERM
