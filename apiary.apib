@@ -492,11 +492,26 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     + Attributes (QuestionnaireReply)
 
 
-#### Export replies of Questionnaire [GET /questionnaires/{questionnaireUuid}/dmp{?format}]
+#### Export Questionnaire [GET /questionnaires/{questionnaireUuid}/dmp{?format}]
     
 + Parameters
     + questionnaireUuid (string) ... UUID of the questionnaire
-    + format: pdf (string) ... One of supported formats - json, html, docx, pdf
+    + format: pdf (enum[string]) ... Desired document format
+      + Members
+            + `json`
+            + `html`
+            + `latex`
+            + `html`
+            + `docx`
+            + `odt`
+            + `pdf`
+            + `rtf`
+            + `rst`
+            + `asciidoc`
+            + `dokuwiki`
+            + `mediawiki`
+            + `epub2`
+            + `epub3`
 
 + Response 200 (application/octet-stream)
 
