@@ -519,7 +519,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 ### Book Reference [/book-references/{brShortUuid}]
 
-#### Get detail of Questionnaire [GET]
+#### Get detail of Book Reference [GET]
 
 - **Possible failures:**
   - HTTP 404
@@ -531,6 +531,53 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Attributes (BookReference)
 
+
+## Group Feedbacks
+
+### Feedbacks Collection [/feedbacks]
+
+#### List All Feedbacks [GET]
+
++ Response 200 (application/json)
+
+    + Attributes (array[Feedback])
+
+#### Create a New Feedback [POST]
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+
++ Request (application/json)
+
+    + Attributes (FeedbackCreate)
+
++ Response 201 (application/json)
+
+    + Attributes (Feedback)
+
+### Feedback Synchronization [/feedbacks/synchronization]
+
+#### Synchronization local feedbacks in database with current state on GitHub  [GET]
+
++ Response 204
+
+
+### Feedback [/feedbacks/{feedbackUuid}]
+
+- **Possible failures:**
+  - HTTP 404
+
+#### Get detail of Feedback [GET]
+
++ Parameters
+    + feedbackUuid (string) ... UUID of the feedback
+
++ Response 200 (application/json)
+
+    + Attributes (Feedback)
+        
 
 # Data Structures
 
@@ -596,3 +643,21 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 + shortUuid: bvq (string)
 + content: <div>Some HTML content</div> (string)
+
+## Feedback (object)
+
++ uuid: 140f0d3a037a4f648d2aa92b103f35b4 (string)
++ issueId: 123 (number)
++ questionUuid: d8a4bcb0a2034b21b06f08fa2cff775b (string)
++ packageId: elixir:root:1.0.0 (string)
++ title: Provide more descriptive content (string)
++ content: I'm not very satisfied with a description of this question (string)
++ createdAt: 2018-06-27T16:24:12Z (datetime)
++ updatedAt: 2018-06-27T16:24:12Z (datetime)
+
+## FeedbackCreate (object)
+
++ questionUuid: d8a4bcb0-a203-4b21-b06f-08fa2cff775b (string)
++ packageId: elixir:root:1.0.0 (string)
++ title: Provide more descriptive content (string)
++ content: I'm not very satisfied with a description of this question (string)
