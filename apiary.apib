@@ -579,6 +579,27 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     + Attributes (Feedback)
         
 
+## Group Metrics
+
+### Metrics Collection [/metrics]
+
+#### List All Metrics [GET]
+
+
+- **Possible failures:**
+  - HTTP 401
+
++ Request (application/json)
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (array[Metric])
+    
+
 # Data Structures
 
 ## Organization (object)
@@ -657,7 +678,23 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 ## FeedbackCreate (object)
 
-+ questionUuid: d8a4bcb0-a203-4b21-b06f-08fa2cff775b (string)
++ questionUuid: d8a4bcb0a2034b21b06f08fa2cff775b (string)
 + packageId: elixir:root:1.0.0 (string)
 + title: Provide more descriptive content (string)
 + content: I'm not very satisfied with a description of this question (string)
+
+## Metric (object)
+
++ uuid: 4facad5dcf514e168b61be7b330ae588 (string)
++ title: Findability (string)
++ abbreviation: F (string)
++ description: ... (string)
++ references: [] (array[Reference])
++ updatedAt: 2018-06-27T16:24:12Z (datetime)
++ createdAt: 2018-06-27T16:24:12Z (datetime)
+
+## Reference (object)
+
++ uuid: 2a58e3be619d40c5a54f1773179420ee (string)
++ referenceType: ResourcePageReference (string)
++ shortUuid: abc (string)
