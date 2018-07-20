@@ -480,6 +480,11 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 - **Required permissions:** QTN_PERM
 
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+  - HTTP 404
+  
 + Parameters
     + questionnaireUuid (string) ... UUID of the questionnaire
     
@@ -490,6 +495,18 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + Response 200 (application/json)
 
     + Attributes (QuestionnaireReply)
+
+
+#### Get Questionnaire Report [PUT /questionnaires/{questionnaireUuid}/report]
+
+- **Required permissions:** QTN_PERM
+
++ Parameters
+    + questionnaireUuid (string) ... UUID of the questionnaire
+
++ Response 200 (application/json)
+
+    + Attributes (Report)
 
 
 #### Export Questionnaire [GET /questionnaires/{questionnaireUuid}/dmp{?format}]
@@ -698,3 +715,27 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + uuid: 2a58e3be619d40c5a54f1773179420ee (string)
 + referenceType: ResourcePageReference (string)
 + shortUuid: abc (string)
+
+## Report (object)
+
++ uuid: `7f822953-f30d-4020-a827-595819f007f1` (string)
++ chapterReports (array[ChapterReport])
++ updatedAt: 2018-06-27T16:24:12Z (datetime)
++ createdAt: 2018-06-27T16:24:12Z (datetime)
+
+## ChapterReport (object)
+
++ chapterUuid: `ebcbab63-0527-4349-8cbd-4dd337b1b000` (string)
++ metrics (array[ReportIndication])
++ indications (array[ReportMetric])
+
+## ReportIndication (object)
+
++ indicationType: AnsweredIndication (string)
++ answeredQuestions: 2 (number)
++ unansweredQuestions: 3 (number)
+
+## ReportMetric (object)
+
++ metricUuid: `4b3d80bc-f52d-4d63-8743-2300ff6e3917` (string)
++ measure: 0 (number)
