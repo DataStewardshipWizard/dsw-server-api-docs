@@ -617,6 +617,27 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     + Attributes (array[Metric])
     
 
+## Group Levels
+
+### Levels Collection [/levels]
+
+#### List All Levels [GET]
+
+
+- **Possible failures:**
+  - HTTP 401
+
++ Request (application/json)
+
+    + Headers
+    
+            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (array[Level])
+    
+
 # Data Structures
 
 ## Organization (object)
@@ -739,3 +760,11 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 + metricUuid: `4b3d80bc-f52d-4d63-8743-2300ff6e3917` (string)
 + measure: 0 (number)
+
+## Level (object)
+
++ number: 1 (number)
++ title: Before Submitting the Proposal (string)
++ description: Some description (string)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
