@@ -3,6 +3,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 # DSW Server API Docs
 
+
 ## Group Info
 
 ### Info Endpoint [/info]
@@ -11,11 +12,8 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 + Response 200 (application/json)
 
-        {
-            "name": "Data Stewardship Wizard Server",
-            "version": "1.0.0",
-            "builtAt": "2017/10/25 19:50:20Z"
-        }
+    + Attributes (Info)
+
 
 ## Group Token
 
@@ -27,19 +25,17 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
   - HTTP 400
     - Invalid JSON
     - Missing required property
+    - Incorrect email or password
+    - Non-active account
 
 + Request (application/json)
-            
-        {
-            "email": "john.doe@example.com",
-            "password": "password"
-        }
+
+    + Attributes (TokenCreate)
 
 + Response 201 (application/json)
 
-        {
-            "token": "jij23ioin23.br34htjdsuis.df789323n23jn2"
-        }
+    + Attributes (Token)
+
 
 ## Group Organization
 
@@ -54,7 +50,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
 + Response 200 (application/json)
 
@@ -67,7 +63,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
   - HTTP 400
     - Invalid JSON
     - Missing required property
-    - GroupId is not in valid format
+    - Invalid GroupId format
   - HTTP 401
   - HTTP 403
     - You don’t have ORG_PERM permission
@@ -76,14 +72,14 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
     
-    + Attributes (Organization)
+    + Attributes (OrganizationChange)
         
 
 + Response 200 (application/json)
 
-    + Attributes (array[Organization])
+    + Attributes (Organization)
 
 ## Group Users
 
@@ -102,13 +98,13 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
 + Response 200 (application/json)
 
     + Attributes (array[User])
 
-#### Registrate/Create user [POST]
+#### Registrate / Create user [POST]
 
 - **Required permissions:** UM_PERM (Just for creation, not registration)
 
@@ -121,14 +117,12 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
   - HTTP 403
     - You don’t have UM_PERM permission (Just for creation, not registration)
 
+<!-- Registrate User -->
+
 + Request (application/json)
 
-    + Headers
-    
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
-
     + Attributes (UserRegistration)
-    
+
 + Response 201 (application/json)
 
     + Attributes (User)
@@ -162,7 +156,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
     
 + Response 200
 
@@ -190,7 +184,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
     + Attributes (UserChange)    
     
@@ -198,7 +192,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Attributes (User)
 
-#### Activate user [PUT /users/{userUuid}/state]
+#### Enable / disable user [PUT /users/{userUuid}/state]
 
 - **Required permissions:** UM_PERM
 
@@ -211,6 +205,30 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 + Parameters
     + userUuid: 2j3hj4 (string) ... UUID of the User
+    
++ Request (application/json)
+
+    + Attributes (UserChange)    
+    
++ Response 200
+
+    + Attributes (User)
+
+#### Activate user [PUT /users/{userUuid}/state{?hash}]
+
+- **Required permissions:** UM_PERM
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+    - Hash query param has to be provided
+  - HTTP 404
+    - User doesn't exist
+
++ Parameters
+    + userUuid: 2j3hj4 (string) ... UUID of the User
+    + hash: h53j1jb (string) ... Random generated hash, provided in email
     
 + Request (application/json)
 
@@ -242,9 +260,9 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
-    + Attributes (UserPasswordChange)    
+    + Attributes (UserPassword)    
     
 + Response 204
 
@@ -254,7 +272,6 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
   - HTTP 400
     - Invalid JSON
     - Missing required property
-    - You have to log in as Administrator or you have to provide a hash in query param
     - Hash query param has to be provided
   - HTTP 404
     - User doesn't exist
@@ -265,7 +282,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     
 + Request (application/json)
 
-    + Attributes (UserPasswordChange)    
+    + Attributes (UserPassword)    
     
 + Response 204
 
@@ -287,7 +304,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
 + Response 204
 
@@ -306,7 +323,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
     + Attributes (UserProfileChange)    
     
@@ -328,11 +345,30 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
-    + Attributes (UserPasswordChange)    
+    + Attributes (UserPassword)    
     
 + Response 204
+
+
+## Group Action Keys
+
+### Action Keys Collection [/action-keys]
+
+#### Create Action Key [POST]
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+
++ Request (application/json)
+
+    + Attributes (ActionKey)
+
++ Response 201 (application/json)
+
 
         
 ## Group Questionnaires
@@ -343,89 +379,48 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 - **Required permissions:** QTN_PERM
 
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+
 + Response 200 (application/json)
 
-        [
-            {
-                "uuid": "521ba33b-10cf-4829-bbe1-90ea06a68f4f",
-                "name": "My First Wizard",
-                "package": {
-                    "id": "elixir.nl:core-nl:2.0.0",
-                    "name": "Elixir Netherlands",
-                    "groupId": "elixir.nl",
-                    "artifactId": "core-nl",
-                    "version": "2.0.0",
-                    "description": "Updated experts",
-                    "parentPackageId": "elixir:core:2.0.0"
-                }
-            }
-        ]
+    + Attributes (array[Questionnaire])
 
 #### Create a New Questionnaire [POST]
 
 - **Required permissions:** QTN_PERM
 
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+  - HTTP 404
+    - Package doesn't exist
+
 + Request (application/json)
 
-        {
-            "name": "My First Wizard",
-            "packageId": "elixir.nl:core-nl:2.0.0"
-        }
+    + Attributes (QuestionnaireCreate)
 
 + Response 201 (application/json)
 
-        {
-            "uuid": "521ba33b-10cf-4829-bbe1-90ea06a68f4f",
-            "name": "My First Wizard",
-            "package": {
-                "id": "elixir.nl:core-nl:2.0.0",
-                "name": "Elixir Netherlands",
-                "groupId": "elixir.nl",
-                "artifactId": "core-nl",
-                "version": "2.0.0",
-                "description": "Updated experts",
-                "parentPackageId": "elixir:core:2.0.0"
-            }
-        }
+    + Attributes (Questionnaire)
 
 ### Questionnaire Public [/questionnaires/public]
 
 #### Get public example ofquestionnaire [GET]
 
+- **Possible failures:**
+  - HTTP 404
+    - Questionnaire doesn't exist
+
 + Response 200 (application/json)
 
-        {
-            "uuid": "0509da0e-e79f-4d56-845e-2468f8b33f09",
-            "name": "Public Questionnaire",
-            "package": {
-                "id": "elixir.nl:core-nl:2.0.0",
-                "name": "Elixir Netherlands",
-                "groupId": "elixir.nl",
-                "artifactId": "core-nl",
-                "version": "2.0.0",
-                "description": "Updated experts",
-                "parentPackageId": "elixir:core:2.0.0"
-            },
-            "knowledgeModel": {
-                "uuid": "ff672529-e837-4201-b7b1-7ada557d9725",
-                "name": "My Knowledge Model",
-                "chapters": [
-                    {
-                        "text": "Looong long text",
-                        "uuid": "e3c4b314-919b-418d-bb85-a07c97433427",
-                        "questions": [],
-                        "title": "Design of experiment"
-                    },
-                    {
-                        "text": "Some long text",
-                        "uuid": "ca46cd40-3999-4f0d-a8ba-15d57682dfeb",
-                        "questions": [],
-                        "title": "Testing"
-                    }
-                ]
-            },
-            "replies": []
-        }
+    + Attributes (QuestionnaireDetail)
         
         
 ### Questionnaire [/questionnaires/{questionnaireUuid}]
@@ -434,85 +429,62 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 - **Required permissions:** QTN_PERM
 
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+  - HTTP 404
+    - Questionnaire doesn't exist
+
 + Parameters
-    + questionnaireUuid (string) ... UUID of the questionnaire
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
 
 + Response 200 (application/json)
 
-        {
-            "uuid": "521ba33b-10cf-4829-bbe1-90ea06a68f4f",
-            "name": "My First Questionnaire",
-            "package": {
-                "id": "elixir.nl:core-nl:2.0.0",
-                "name": "Elixir Netherlands",
-                "groupId": "elixir.nl",
-                "artifactId": "core-nl",
-                "version": "2.0.0",
-                "description": "Updated experts",
-                "parentPackageId": "elixir:core:2.0.0"
-            },
-            "knowledgeModel": {
-                "uuid": "ff672529-e837-4201-b7b1-7ada557d9725",
-                "name": "My Knowledge Model",
-                "chapters": [
-                    {
-                        "text": "Looong long text",
-                        "uuid": "e3c4b314-919b-418d-bb85-a07c97433427",
-                        "questions": [],
-                        "title": "Design of experiment"
-                    },
-                    {
-                        "text": "Some long text",
-                        "uuid": "ca46cd40-3999-4f0d-a8ba-15d57682dfeb",
-                        "questions": [],
-                        "title": "Testing"
-                    }
-                ]
-            },
-            "replies": [
-                { "path": "chapter1.question1.answer1", "value": "foo"},
-                { "path": "chapter1.question1.answer2", "value": "bar"}
-            ]
-        }
+    + Attributes (QuestionnaireDetail)
         
 
-#### Update replies of Questionnaire [PUT /questionnaires/{questionnaireUuid}/replies]
+#### Update Questionnaire [PUT /questionnaires/{questionnaireUuid}]
 
 - **Required permissions:** QTN_PERM
 
 - **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
   - HTTP 401
   - HTTP 403
+    - You don’t have QTN_PERM permission
   - HTTP 404
-  
+    - Questionnaire doesn't exist
+
 + Parameters
-    + questionnaireUuid (string) ... UUID of the questionnaire
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
     
 + Request (application/json)
 
-    + Attributes (QuestionnaireReply)
+    + Attributes (QuestionnaireChange)
 
 + Response 200 (application/json)
 
-    + Attributes (QuestionnaireReply)
-
-
-#### Get Questionnaire Report [PUT /questionnaires/{questionnaireUuid}/report]
-
-- **Required permissions:** QTN_PERM
-
-+ Parameters
-    + questionnaireUuid (string) ... UUID of the questionnaire
-
-+ Response 200 (application/json)
-
-    + Attributes (Report)
+    + Attributes (QuestionnaireDetail)
 
 
 #### Export Questionnaire [GET /questionnaires/{questionnaireUuid}/dmp{?format}]
     
+- **Possible failures:**
+  - HTTP 400
+    - DMP Format is not currently supported
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+  - HTTP 404
+    - Questionnaire doesn't exist
+  - HTTP 500
+    - Couldn't transform to desired document format
+
 + Parameters
-    + questionnaireUuid (string) ... UUID of the questionnaire
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
     + format: pdf (enum[string]) ... Desired document format
       + Members
             + `json`
@@ -531,6 +503,76 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
             + `epub3`
 
 + Response 200 (application/octet-stream)
+
+
+#### Retrieve Preview of Questionnaire Report [POST /questionnaires/{questionnaireUuid}/report/preview]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+  - HTTP 404
+    - Questionnaire doesn't exist
+
++ Parameters
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
+
++ Request (application/json)
+
+    + Attributes (array[QuestionnaireChange])
+
++ Response 200 (application/json)
+
+    + Attributes (Report)
+
+
+#### Get Questionnaire Report [GET /questionnaires/{questionnaireUuid}/report]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+  - HTTP 404
+    - Questionnaire doesn't exist
+
++ Parameters
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
+
++ Response 200 (application/json)
+
+    + Attributes (Report)
+
+
+#### Delete Questionnaire [DELETE /questionnaires/{questionnaireUuid}]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+  - HTTP 404
+    - Questionnaire doesn't exist
+    
++ Parameters
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 204
+
+
 
 ## Group Book References
 
@@ -555,9 +597,19 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 #### List All Feedbacks [GET]
 
+- **Possible failures:**
+  - HTTP 401
+    
++ Request
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
 + Response 200 (application/json)
 
     + Attributes (array[Feedback])
+
 
 #### Create a New Feedback [POST]
 
@@ -565,6 +617,13 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
   - HTTP 400
     - Invalid JSON
     - Missing required property
+  - HTTP 401
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
 + Request (application/json)
 
@@ -578,18 +637,37 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 #### Synchronization local feedbacks in database with current state on GitHub  [GET]
 
+- For authorization it should be used a service token defined in application configuration
+
+- **Possible failures:**
+  - HTTP 401
+    
++ Request
+
+    + Headers
+    
+            Authorization: Bearer huhui3h12u2h3ui1h23uidf789323n23jn2
+
 + Response 204
 
 
 ### Feedback [/feedbacks/{feedbackUuid}]
 
-- **Possible failures:**
-  - HTTP 404
-
 #### Get detail of Feedback [GET]
 
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 404
+    - Feedback doesn't exist
+    
 + Parameters
     + feedbackUuid (string) ... UUID of the feedback
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
 + Response 200 (application/json)
 
@@ -610,7 +688,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
 + Response 200 (application/json)
 
@@ -631,7 +709,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Headers
     
-            x-dsp-auth-token: jij23ioin23.br34htjdsuis.df789323n23jn2
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
 + Response 200 (application/json)
 
@@ -640,14 +718,672 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 # Data Structures
 
-## Organization (object)
+## Action Key Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+### ActionKey (object)
++ type (ActionKeyType)
++ email: `albert.einstein@example.com` (string)
+
+### ActionKeyType (enum[string])
++ `RegistrationActionKey`
++ `ForgottenPasswordActionKey`
+
+
+## BookReference Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### BookReference (object)
++ shortUuid: bvq (string)
++ booChapter: 1.1 (string)
++ content: <div>Some HTML content</div> (string)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+
+## Branch Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### Branch (object)
++ uuid: `7c70be8c-b6c3-4dd8-8701-3e1e0e6730da` (string)
++ name: My customization (string)
++ organizationId: `cz.cvut.fit` (string)
++ kmId: root (string)
++ parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
++ lastAppliedParentPackageId: `cz.cvut:common:1.0.0` (string, optional)
++ owner: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+### BranchChange (object)
++ name: My customization (string)
++ kmId: root (string)
++ parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
+
+### BranchWithState (object)
++ uuid: `7c70be8c-b6c3-4dd8-8701-3e1e0e6730da` (string)
++ name: My customization (string)
++ organizationId: `cz.cvut.fit` (string)
++ kmId: root (string)
++ parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
++ branchState (BranchState)
++ lastAppliedParentPackageId: `cz.cvut:common:1.0.0` (string, optional)
++ owner: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+
+### BranchState (enum[string])
++ `Default`
++ `Edited`
++ `Outdated`
++ `Migrating`
++ `Migrated`
+
+
+## Data Management Plan Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### DataManagementPlan (object)
++ uuid: `f23f9f2d-8f4a-4c27-9bef-45899a2ea5ec` (string)
++ questionnaireUuid: `cd819d1b-ab70-4bca-ac30-e031b5b20e5d` (string)
++ level: 2 (number)
++ filledKnowledgeModel (FilledKnowledgeModel)
++ metrics (array[Metric]
++ report (Report)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+## Error Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### AppError (object)
++ uuid: `6c46a7fc-918e-4195-88be-b146b628c0c8` (string)
+
+
+## Event Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### Event (enum)
++ (AddKnowledgeModelEvent)
++ (EditKnowledgeModelEvent)
++ (AddChapterEvent)
++ (EditChapterEvent)
++ (DeleteChapterEvent)
++ (AddQuestionEvent)
++ (EditQuestionEvent)
++ (DeleteQuestionEvent)
++ (AddAnswerEvent)
++ (EditAnswerEvent)
++ (DeleteAnswerEvent)
++ (AddExpertEvent)
++ (EditExpertEvent)
++ (DeleteExpertEvent)
++ (AddReferenceEvent)
++ (EditReferenceEvent)
++ (DeleteReferenceEvent)
+
+### AddKnowledgeModelEvent (object)
++ eventType: AddKnowledgeModelEvent (string)
++ uuid: `53341c8c-ce33-4e6e-ae97-f1787b825215` (string)
++ path: [] (array[string])
++ kmUuid: `9219c5d5-5f0c-4465-864a-46846f65581f ` (string)
++ name: My First Knowledge Model (string)
+
+### EditKnowledgeModelEvent (object)
++ eventType: EditKnowledgeModelEvent (string)
++ uuid: `1f72591a-6a72-42b7-b3da-5c4be987b5ee` (string)
++ path: [] (array[string])
++ kmUuid: `9219c5d5-5f0c-4465-864a-46846f65581f ` (string)
++ name: My First Knowledge Model (string)
++ chapterIds: [] (array[string])
+
+### AddChapterEvent (object)
++ eventType: AddChapterEvent (string)
++ uuid: `8fbf07f8-5581-452d-b640-b244ad8d1fd8` (string)
++ path: [] (array[string])
++ chapterUuid: `4ec7611b-0392-4602-9302-dfcb79654d24` (string)
++ title: `First Chapter` (string)
++ text: `Some descriptive content of this chapter` (string)
++ questions (array[FilledQuestion])
+
+### EditChapterEvent (object)
++ eventType: EditChapterEvent (string)
++ uuid: `2600f890-df83-419f-a875-078d3526e496` (string)
++ path: [] (array[string])
++ chapterUuid: `4ec7611b-0392-4602-9302-dfcb79654d24` (string)
++ title: `First Chapter` (string)
++ text: `Some descriptive content of this chapter` (string)
++ questionIds: [] (array[string])
+
+### DeleteChapterEvent (object)
++ eventType: DeleteChapterEvent (string)
++ uuid: `b0fa9a24-b74d-4755-94d2-71bfb2e28d96` (string)
++ path: [] (array[string])
++ chapterUuid: `4ec7611b-0392-4602-9302-dfcb79654d24` (string)
+
+### AddQuestionEvent (object)
++ eventType: AddQuestionEvent (string)
++ uuid: `c44f5317-882b-4e54-8403-f2a791ac9492` (string)
++ path: [] (array[string])
++ questionUuid: `44cd1310-3c99-4e5e-9036-dda31300f510` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string, optional)
++ requiredLevel: 2 (number, optional)
++ answerItemTemplate (AnswerItemTemplatePlain, optional)
+
+### EditQuestionEvent (object)
++ eventType: EditQuestionEvent (string)
++ uuid: `4c8b9c0b-b40d-4917-8b26-d68b97f1604e` (string)
++ path: [] (array[string])
++ questionUuid: `44cd1310-3c99-4e5e-9036-dda31300f510` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string, optional)
++ requiredLevel: 2 (number, optional)
++ answerItemTemplate (AnswerItemTemplatePlainWithIds, optional)
++ answerIds: [] (array[string], optional)
++ expertIds: [] (array[string])
++ referenceIds: [] (array[string])
+
+### DeleteQuestionEvent (object)
++ eventType: DeleteQuestionEvent (string)
++ uuid: `414636a2-941a-4301-a479-e5dc582f5700` (string)
++ path: [] (array[string])
++ questionUuid: `44cd1310-3c99-4e5e-9036-dda31300f510` (string)
+
+### AddAnswerEvent (object)
++ eventType: AddAnswerEvent (string)
++ uuid: `0162f360-2e2b-4546-b3a9-5f3ce857ce1a` (string)
++ path: [] (array[string])
++ answerUuid: `a7255bd9-edd7-40ce-97a7-dbd91fb69abc` (string)
++ label: First advice (string)
++ advice: Some helpful comment (string, optional)
++ metricMeasures (array[MetricMeasure])
+
+### EditAnswerEvent (object)
++ eventType: EditAnswerEvent (string)
++ uuid: `844f2a0f-a247-476f-9c2f-4381cdcd856f` (string)
++ path: [] (array[string])
++ answerUuid: `a7255bd9-edd7-40ce-97a7-dbd91fb69abc` (string)
++ label: First advice (string)
++ advice: Some helpful comment (string, optional)
++ followUpIds: [] (array[string])
++ metricMeasures (array[MetricMeasure])
+
+### DeleteAnswerEvent (object)
++ eventType: DeleteAnswerEvent (string)
++ uuid: `440e6c34-085c-401d-bd0b-e2da64c42092` (string)
++ path: [] (array[string])
++ answerUuid: `a7255bd9-edd7-40ce-97a7-dbd91fb69abc` (string)
+
+### AddExpertEvent (object)
++ eventType: AddExpertEvent (string)
++ uuid: `2fb0a8e6-8854-44e8-a8f1-d702fff6f57b` (string)
++ path: [] (array[string])
++ expertUuid: `023e53b0-3a78-42f7-994b-e4244d226396` (string)
++ name: Albert Einstein (string)
++ email: `albert.einstein@example.com` (string)
+
+### EditExpertEvent (object)
++ eventType: EditExpertEvent (string)
++ uuid: `9183953f-c179-4967-bc14-5c7e8b69c626` (string)
++ path: [] (array[string])
++ expertUuid: `023e53b0-3a78-42f7-994b-e4244d226396` (string)
++ name: Albert Einstein (string)
++ email: `albert.einstein@example.com` (string)
+
+### DeleteExpertEvent (object)
++ eventType: DeleteExpertEvent (string)
++ uuid: `69ffac0d-2781-4a74-a1d9-faead0156792` (string)
++ path: [] (array[string])
++ expertUuid: `023e53b0-3a78-42f7-994b-e4244d226396` (string)
+
+### AddReferenceEvent (enum)
++ (AddResourcePageReferenceEvent)
++ (AddURLReferenceEvent)
++ (AddCrossReferenceEvent)
+
+### AddResourcePageReferenceEvent (object)
++ eventType: AddReferenceEvent (string)
++ referenceType: ResourcePageReference (string)
++ uuid: `a77ce5ad-76e9-4286-ba85-8050078f1fbe` (string)
++ path: [] (array[string])
++ referenceUuid: `3747911b-0983-47a7-b49e-0c5f24dab588` (string)
++ shortUuid: abc (string)
+
+### AddURLReferenceEvent (object)
++ eventType: AddReferenceEvent (string)
++ referenceType: URLReference (string)
++ uuid: `7b3c243c-2548-49bb-a384-59b59c5a1d90` (string)
++ path: [] (array[string])
++ referenceUuid: `c5d8513b-1025-4fc2-98ed-1549f7f7e24b` (string)
++ url: `https://fair-metrics.com` (string)
++ label: Fair Metrics Definitions (string)
+
+### AddCrossReferenceEvent (object)
++ eventType: AddReferenceEvent (string)
++ referenceType: CrossReference (string)
++ uuid: `d0a47392-b706-4f4b-b158-082ef0aba54a` (string)
++ path: [] (array[string])
++ referenceUuid: `5fcf75a1-d0b1-42e1-b665-b49f933c688b` (string)
++ targetUuid: `91ed1251-b636-4214-949a-44a322bc6981` (string)
++ description: Some link to other part of KM (string)
+
+### EditReferenceEvent (enum)
++ (EditResourcePageReferenceEvent)
++ (EditURLReferenceEvent)
++ (EditCrossReferenceEvent)
+
+### EditResourcePageReferenceEvent (object)
++ eventType: EditReferenceEvent (string)
++ referenceType: ResourcePageReference (string)
++ uuid: `d4d14690-9ddb-46fa-9333-4d00f743b771` (string)
++ path: [] (array[string])
++ referenceUuid: `93f00ee9-5e8a-45c8-b159-2b38356367cf` (string)
++ shortUuid: abc (string)
+
+### EditURLReferenceEvent (object)
++ eventType: EditReferenceEvent (string)
++ referenceType: URLReference (string)
++ uuid: `26e39c4c-6454-4f1b-8a5a-2bb643a18489` (string)
++ path: [] (array[string])
++ referenceUuid: `2e59b25c-41f9-4c04-8398-5832c145d072` (string)
++ url: `https://fair-metrics.com` (string)
++ label: Fair Metrics Definitions (string)
+
+### EditCrossReferenceEvent (object)
++ eventType: EditReferenceEvent (string)
++ referenceType: CrossReference (string)
++ uuid: `62c2e9cd-6216-4869-a005-655bee35cc13` (string)
++ path: [] (array[string])
++ referenceUuid: `18a9e288-1c2d-48c1-bb66-dadb585bbcee` (string)
++ targetUuid: `91ed1251-b636-4214-949a-44a322bc6981` (string)
++ description: Some link to other part of KM (string)
+
+### DeleteReferenceEvent (enum)
++ (DeleteResourcePageReferenceEvent)
++ (DeleteURLReferenceEvent)
++ (DeleteCrossReferenceEvent)
+
+### DeleteResourcePageReferenceEvent (object)
++ eventType: DeleteReferenceEvent (string)
++ referenceType: ResourcePageReference (string)
++ uuid: `505ec8cf-4cfc-41ef-9ba6-abbea078f130` (string)
++ path: [] (array[string])
++ referenceUuid: `fe962a23-bc93-4a21-abe4-d0e2c121adbe` (string)
+
+### DeleteURLReferenceEvent (object)
++ eventType: DeleteReferenceEvent (string)
++ referenceType: URLReference (string)
++ uuid: `84b94573-bb44-4718-87d1-42357f10a245` (string)
++ path: [] (array[string])
++ referenceUuid: `54fd2ddd-fe17-4ce5-9d2a-df2fbc88c7dc` (string)
+
+### DeleteCrossReferenceEvent (object)
++ eventType: DeleteReferenceEvent (string)
++ referenceType: CrossReference (string)
++ uuid: `4308a1b3-2a81-4122-8276-da98b2f5f48f` (string)
++ path: [] (array[string])
++ referenceUuid: `c8fec621-0aac-4fd0-a0bd-69c53983bf34` (string)
+
+## Filled Knowledge Model Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### FilledKnowledgeModel (object)
++ uuid: `3a48fad4-0a8b-4efb-b7b0-1e0f539708f9` (string)
++ name: My Knowledge Model (string)
++ chapters (array[FilledChapter])
+
+### FilledChapter (object)
++ uuid: `0fc4d2e6-1fb9-4e98-a243-25c0e9ad6234` (string)
++ title: `First Chapter` (string)
++ text: `Some descriptive content of this chapter` (string)
++ questions (array[FilledQuestion])
+
+### FilledQuestion (object)
++ uuid: `4ce0414d-7d1d-47cd-82b0-7774b63ba3da` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string)
++ requiredLevel: 2 (number)
++ answerItemTemplate (AnswerItemTemplate, optional)
++ answers (array[Answer], optional)
++ answerValue (string, optional)
++ answerOption (FilledAnswer, optional)
++ answerItems (FilledAnswerItem, optional)
++ references (array[Reference])
++ experts (array[Expert])
+
+### FilledAnswer (object)
++ uuid: `ee96cd8f-e761-454a-89a0-65548f4960e1` (string)
++ label: First advice (string)
++ advice: Some helpful comment (string)
++ followUps (array[FilledQuestion])
++ metricMeasures (array[MetricMeasure])
+
+### FilledAnswerItem (object)
++ uuid: `ee96cd8f-e761-454a-89a0-65548f4960e1` (string)
++ title: MongoDB (string)
++ value: 10GB (string)
++ questions (array[FilledQuestion])
+
+
+## Feedback Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### FeedbackCreate (object)
++ questionUuid: `59bd7bd3-07d7-4512-95f6-f19f69786527` (string)
++ packageId: elixir:root:1.0.0 (string)
++ title: Provide more descriptive content (string)
++ content: I'm not very satisfied with a description of this question (string)
+
+### Feedback (object)
++ uuid: `495bf77b-d0c3-44ee-be7c-e0eccc092186` (string)
++ issueId: 123 (number)
++ issueUrl: `https://github.com/DataStewardshipWizard/dsw-common/issues/123` (string)
++ questionUuid: `59bd7bd3-07d7-4512-95f6-f19f69786527` (string)
++ packageId: elixir:root:1.0.0 (string)
++ title: Provide more descriptive content (string)
++ content: I'm not very satisfied with a description of this question (string)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+
+## Info Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### Info (object)
++ name: Data Stewardship Wizard Server (string)
++ version: `1.0.0` (string)
++ builtAt: `2017/10/25 19:50:20Z` (string)
+
+
+## Knowledge Model Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### KnowledgeModel (object)
++ uuid: `6c46a7fc-918e-4195-88be-b146b628c0c8` (string)
++ name: My Knowledge Model (string)
++ chapters (array[Chapter])
+
+### Chapter (object)
++ uuid: `c5b07143-9d31-40c3-bc68-46cffc939c5b` (string)
++ title: `First Chapter` (string)
++ text: `Some descriptive content of this chapter` (string)
++ questions (array[Question])
+
+### Question (object)
++ uuid: `df9efc61-69c3-4853-848b-9d07f4b618c4` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string)
++ requiredLevel: 2 (number)
++ answers (array[Answer], optional)
++ answerItemTemplate (AnswerItemTemplate, optional)
++ references (array[Reference])
++ experts (array[Expert])
+
+### Answer (object)
++ uuid: `cdffeda2-4bdc-45ee-8c49-f230a5af2f68` (string)
++ label: First advice (string)
++ advice: Some helpful comment (string)
++ followUps (array[Question])
++ metricMeasures (array[MetricMeasure])
+
+### AnswerItemTemplate (object)
++ title: Databases (string)
++ questions (array[Question])
+
+### AnswerItemTemplatePlain (object)
++ title: Databases (string)
+
+### AnswerItemTemplatePlainWithIds (object)
++ title: Databases (string)
++ questionIds: [] (array[string])
+
+### Expert (object)
++ uuid: `5009a311-a19f-4d05-bd24-fa3237416fe4` (string)
++ name: Albert Einstein (string)
++ email: `albert.einstein@example.com` (string)
+
+### Reference (enum)
++ (ResourcePageReference)
++ (URLReference)
++ (CrossReference)
+
+### ResourcePageReference (object)
++ referenceType: ResourcePageReference (string)
++ uuid: `4889f3fd-3310-457f-b0b7-9805ad3954eb` (string)
++ shortUuid: abc (string)
+
+### URLReference (object)
++ referenceType: URLReference (string)
++ uuid: `7d92bc47-6a33-49a5-8878-e59b30cf03b3` (string)
++ url: `https://fair-metrics.com` (string)
++ label: Fair Metrics Definitions (string)
+
+### CrossReference (object)
++ referenceType: CrossReference (string)
++ uuid: `b1506e24-b9f7-4f07-9096-c1acd48759ca` (string)
++ targetUuid: `91ed1251-b636-4214-949a-44a322bc6981` (string)
++ description: Some link to other part of KM (string)
+
+### Metric (object)
++ uuid: `db667ca6-bb88-4953-8417-0ff6298f97f1` (string)
++ title: Findability (string)
++ abbreviation: F (string)
++ description: ... (string)
++ references: [] (array[Reference])
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+### MetricMeasure (object)
++ uuid: `00b434f8-b39f-45b2-b712-89eacbcc0af8` (string)
++ measure: 0.8 (number)
++ weight: 0.5 (number)
+
+
+## Level Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### Level (object)
++ level: 1 (number)
++ title: Before Submitting the Proposal (string)
++ description: Some description (string)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+
+## Migrator Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### MigrationConflictAction (enum[string])
++ `Apply`
++ `Edited`
++ `Reject`
+
+### MigratorConflict (object)
++ originalEventUuid: `5fdaa25f-5c6e-4bda-b520-c7d0f4a2bc64` (string)
++ action (MigrationConflictAction)
++ event (Event)
+
+### MigratorStateCreate (object)
++ targetPackageId: `cz.cvut:common:1.0.0` (string)
+
+### RunningState (object)
++ stateType: RunningState (string)
+
+### ConflictState (object)
++ stateType: ConflictState (string)
++ targetEvent (Event)
+
+### ErrorState (object)
++ stateType: ErrorState (string)
++ error (AppError)
+
+### CompletedState (object)
++ stateType: CompletedState (string)
+
+### MigrationStateType (enum)
++ (RunningState)
++ (ConflictState)
++ (ErrorState)
++ (CompletedState)
+
+### MigrationState (object)
++ branchUuid: `2636b40f-b1cd-44ac-a04a-811c72b1dfa5` (string)
++ migrationState (MigrationStateType)
++ branchParentId: `cz.cvut:common:1.0.0` (string)
++ targetPackageId: `cz.cvut:common:2.0.0` (string)
++ currentKnowledgeModel (KnowledgeModel)
+
+
+## Organization Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### OrganizationChange (object)
 + uuid: `0e795186-9733-4c60-9f03-58cea76590e1` (string)
 + name: Elixir Amsterdam (string)
 + groupId: elixir.nl.amsterdam (string)
 
-## User (object)
+### Organization (object)
++ uuid: `0e795186-9733-4c60-9f03-58cea76590e1` (string)
++ name: Elixir Amsterdam (string)
++ groupId: elixir.nl.amsterdam (string)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
 
+
+## Package Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### Package (object)
++ id: `cz.cvut.fit:software-engineering:1.0.0` (string)
++ name: Software Engineering (string)
++ organizationId: `cz.cvut.fit` (string)
++ kmId: `software-engineering:` (string)
++ version: `1.0.0` (string)
++ description: Customizations for Faculty of Information Technology (string)
++ parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
+
+### PackageSimple (object)
++ name: Software Engineering (string)
++ organizationId: `cz.cvut.fit` (string)
++ kmId: `software-engineering:` (string)
+
+### PackageWithEvents (object)
++ id: `cz.cvut.fit:software-engineering:1.0.0` (string)
++ name: Software Engineering (string)
++ organizationId: `cz.cvut.fit` (string)
++ kmId: `software-engineering:` (string)
++ version: `1.0.0` (string)
++ description: Customizations for Faculty of Information Technology (string)
++ parentPackageId: cz.cvut:common:1.0.0 (string, optional)
++ events (array[Event])
+
+
+## Questionnaire Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### QuestionnaireCreate (object)
++ name: My Questionnaire (string)
++ level: 2 (number)
++ packageId: `cz.cvut:common:1.0.0` (string)
+
+### QuestionnaireChange (object)
++ level: 3 (number)
++ replies (array[Reply])
+
+### QuestionnaireDetail (object)
++ uuid: `eb9db9e0-811d-4dd8-9651-e900ef7fffec` (string)
++ name: My Questionnaire (string)
++ level: 2 (number)
++ package (Package)
++ knowledgeModel (KnowledgeModel)
++ replies (array[Reply])
++ ownerUuid: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+### Questionnaire (object)
++ uuid: `eb9db9e0-811d-4dd8-9651-e900ef7fffec` (string)
++ name: My Questionnaire (string)
++ level: 1 (number)
++ private: true (boolean)
++ package (Package)
++ ownerUuid: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+### Reply (object)
++ path: i1j3io131j23i1j.i1j3io131j23i1j.i1j3io131j23i1j.0.itemName (string)
++ value (ReplyValue)
+
+### ReplyValue (enum)
++ (StringReply)
++ (AnswerReply)
++ (ItemListReply)
+
+### StringReply (object)
++ type: StringReply (string)
++ value: MongoDB (string)
+
+### AnswerReply (object)
++ type: AnswerReply (string)
++ value: `4889f3fd-3310-457f-b0b7-9805ad3954eb` (string)
+
+### ItemListReply (object)
++ type: ItemListReply (string)
++ value: 2 (number)
+
+
+## Report Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### AnsweredIndication (object)
++ indicationType: `AnsweredIndication` (string)
++ answeredQuestions: 2 (number)
++ unansweredQuestions: 3 (number)
+
+### Indication (enum)
++ (AnsweredIndication)
+
+### MetricSummary (object)
++ metricUuid: `4b3d80bc-f52d-4d63-8743-2300ff6e3917` (string)
++ measure: 0 (number)
+
+### ChapterReport (object)
++ chapterUuid: `ebcbab63-0527-4349-8cbd-4dd337b1b000` (string)
++ indications (array[Indication])
++ metrics (array[MetricSummary])
+
+### Report (object)
++ uuid: `7f822953-f30d-4020-a827-595819f007f1` (string)
++ chapterReports (array[ChapterReport])
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+
+## Token Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### TokenCreate (object)
++ email: albert.einstein@email.com (string)
++ password: password (string)
+
+### Token (object)
++ name: jij23ioin23.br34htjdsuis.df789323n23jn2 (string)
+
+
+## User Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### UserChange (object)
++ uuid: `d977c686-2e0e-46fe-b552-bb379916df89` (string)
++ name: Albert (string)
++ surname: Einstein (string)
++ email: albert.einstein@example.com (string)
++ role: ADMIN (string)
++ isActive: true (boolean)
+
+### UserCreate (object)
++ name: Albert (string)
++ surname: Einstein (string)
++ email: albert.einstein@example.com (string)
++ role: ADMIN (string)
++ password: aijio2jiasjdias (string)
+
+### UserRegistration (object)
++ name: Albert (string)
++ surname: Einstein (string)
++ email: albert.einstein@example.com (string)
++ password: aijio2jiasjdias (string)
+
+### User (object)
 + uuid: `d977c686-2e0e-46fe-b552-bb379916df89` (string)
 + name: Albert (string)
 + surname: Einstein (string)
@@ -658,113 +1394,19 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + createdAt: `2018-06-27T16:24:12Z` (string)
 + updatedAt: `2018-06-27T16:24:12Z` (string)
 
-## UserRegistration (object)
-
-+ name: Albert (string)
-+ surname: Einstein (string)
-+ email: albert.einstein@example.com (string)
+### UserPassword (object)
 + password: aijio2jiasjdias (string)
 
-## UserCreate (object)
-
-+ name: Albert (string)
-+ surname: Einstein (string)
-+ email: albert.einstein@example.com (string)
-+ role: ADMIN (string)
-+ password: aijio2jiasjdias (string)
-
-## UserChange (object)
-
-+ uuid: `d977c686-2e0e-46fe-b552-bb379916df89` (string)
-+ name: Albert (string)
-+ surname: Einstein (string)
-+ email: albert.einstein@example.com (string)
-+ role: ADMIN (string)
-+ isActive: true (boolean)
-
-## UserProfileChange (object)
-
-+ uuid: `d977c686-2e0e-46fe-b552-bb379916df89` (string)
+### UserProfileChange (object)
 + name: Albert (string)
 + surname: Einstein (string)
 + email: albert.einstein@example.com (string)
 
-## UserPasswordChange (object)
+### UserState (object)
++ active: true (boolean)
 
-+ password: aijio2jiasjdias (string)
 
-## QuestionnaireReply (object)
+## Version Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-+ path: i1j3io131j23i1j.i1j3io131j23i1j.i1j3io131j23i1j.0.itemName (string)
-+ value: MongoDB (string)
-
-## BookReference (object)
-
-+ shortUuid: bvq (string)
-+ content: <div>Some HTML content</div> (string)
-
-## Feedback (object)
-
-+ uuid: `495bf77b-d0c3-44ee-be7c-e0eccc092186` (string)
-+ issueId: 123 (number)
-+ questionUuid: `59bd7bd3-07d7-4512-95f6-f19f69786527` (string)
-+ packageId: elixir:root:1.0.0 (string)
-+ title: Provide more descriptive content (string)
-+ content: I'm not very satisfied with a description of this question (string)
-+ createdAt: `2018-06-27T16:24:12Z` (string)
-+ updatedAt: `2018-06-27T16:24:12Z` (string)
-
-## FeedbackCreate (object)
-
-+ questionUuid: `59bd7bd3-07d7-4512-95f6-f19f69786527` (string)
-+ packageId: elixir:root:1.0.0 (string)
-+ title: Provide more descriptive content (string)
-+ content: I'm not very satisfied with a description of this question (string)
-
-## Metric (object)
-
-+ uuid: `db667ca6-bb88-4953-8417-0ff6298f97f1` (string)
-+ title: Findability (string)
-+ abbreviation: F (string)
-+ description: ... (string)
-+ references: [] (array[Reference])
-+ createdAt: `2018-06-27T16:24:12Z` (string)
-+ updatedAt: `2018-06-27T16:24:12Z` (string)
-
-## Reference (object)
-
-+ uuid: `e674fb40-e2d3-4ac5-b935-f32e9925d64dn ` (string)
-+ referenceType: ResourcePageReference (string)
-+ shortUuid: abc (string)
-
-## Report (object)
-
-+ uuid: `7f822953-f30d-4020-a827-595819f007f1` (string)
-+ chapterReports (array[ChapterReport])
-+ createdAt: `2018-06-27T16:24:12Z` (string)
-+ updatedAt: `2018-06-27T16:24:12Z` (string)
-
-## ChapterReport (object)
-
-+ chapterUuid: `ebcbab63-0527-4349-8cbd-4dd337b1b000` (string)
-+ metrics (array[ReportIndication])
-+ indications (array[ReportMetric])
-
-## ReportIndication (object)
-
-+ indicationType: AnsweredIndication (string)
-+ answeredQuestions: 2 (number)
-+ unansweredQuestions: 3 (number)
-
-## ReportMetric (object)
-
-+ metricUuid: `4b3d80bc-f52d-4d63-8743-2300ff6e3917` (string)
-+ measure: 0 (number)
-
-## Level (object)
-
-+ number: 1 (number)
-+ title: Before Submitting the Proposal (string)
+### Version (object)
 + description: Some description (string)
-+ createdAt: `2018-06-27T16:24:12Z` (string)
-+ updatedAt: `2018-06-27T16:24:12Z` (string)
