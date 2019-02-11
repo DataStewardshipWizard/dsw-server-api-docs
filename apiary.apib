@@ -834,7 +834,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + kmUuid: `9219c5d5-5f0c-4465-864a-46846f65581f ` (string)
 + name: My First Knowledge Model (string)
 + tagUuids: [] (array[string])
-+ chapterIds: [] (array[string])
++ chapterUuids: [] (array[string])
 
 ### AddChapterEvent (object)
 + eventType: AddChapterEvent (string)
@@ -852,7 +852,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + chapterUuid: `4ec7611b-0392-4602-9302-dfcb79654d24` (string)
 + title: `First Chapter` (string)
 + text: `Some descriptive content of this chapter` (string)
-+ questionIds: [] (array[string])
++ questionUuids: [] (array[string])
 
 ### DeleteChapterEvent (object)
 + eventType: DeleteChapterEvent (string)
@@ -882,10 +882,10 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + text: `Some descriptive content of this question` (string, optional)
 + requiredLevel: 2 (number, optional)
 + tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
-+ answerItemTemplate (AnswerItemTemplatePlainWithIds, optional)
-+ answerIds: [] (array[string], optional)
-+ expertIds: [] (array[string])
-+ referenceIds: [] (array[string])
++ answerItemTemplate (AnswerItemTemplatePlainWithUuids, optional)
++ answerUuids: [] (array[string], optional)
++ expertUuids: [] (array[string])
++ referenceUuids: [] (array[string])
 
 ### DeleteQuestionEvent (object)
 + eventType: DeleteQuestionEvent (string)
@@ -909,7 +909,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + answerUuid: `a7255bd9-edd7-40ce-97a7-dbd91fb69abc` (string)
 + label: First advice (string)
 + advice: Some helpful comment (string, optional)
-+ followUpIds: [] (array[string])
++ followUpUuids: [] (array[string])
 + metricMeasures (array[MetricMeasure])
 
 ### DeleteAnswerEvent (object)
@@ -1164,9 +1164,9 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 ### AnswerItemTemplatePlain (object)
 + title: Databases (string)
 
-### AnswerItemTemplatePlainWithIds (object)
+### AnswerItemTemplatePlainWithUuids (object)
 + title: Databases (string)
-+ questionIds: [] (array[string])
++ questionUuids: [] (array[string])
 
 ### Expert (object)
 + uuid: `5009a311-a19f-4d05-bd24-fa3237416fe4` (string)
