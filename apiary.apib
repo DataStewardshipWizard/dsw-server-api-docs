@@ -816,6 +816,9 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + (AddReferenceEvent)
 + (EditReferenceEvent)
 + (DeleteReferenceEvent)
++ (AddTagEvent)
++ (EditTagEvent)
++ (DeleteTagEvent)
 
 ### AddKnowledgeModelEvent (object)
 + eventType: AddKnowledgeModelEvent (string)
@@ -830,6 +833,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + path: [] (array[string])
 + kmUuid: `9219c5d5-5f0c-4465-864a-46846f65581f ` (string)
 + name: My First Knowledge Model (string)
++ tagUuids: [] (array[string])
 + chapterIds: [] (array[string])
 
 ### AddChapterEvent (object)
@@ -865,6 +869,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + title: `First Question` (string)
 + text: `Some descriptive content of this question` (string, optional)
 + requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
 + answerItemTemplate (AnswerItemTemplatePlain, optional)
 
 ### EditQuestionEvent (object)
@@ -876,6 +881,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + title: `First Question` (string)
 + text: `Some descriptive content of this question` (string, optional)
 + requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
 + answerItemTemplate (AnswerItemTemplatePlainWithIds, optional)
 + answerIds: [] (array[string], optional)
 + expertIds: [] (array[string])
@@ -1022,6 +1028,33 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + path: [] (array[string])
 + referenceUuid: `c8fec621-0aac-4fd0-a0bd-69c53983bf34` (string)
 
+### AddTagEvent (object)
++ eventType: AddTagEvent (string)
++ uuid: `985e710c-70c2-41bc-a1a4-aab935640796` (string)
++ path: [] (array[string])
++ tagUuid: `11f5a195-226d-4e67-93df-665874a962a2` (string)
++ name: Data Science (string)
++ description: ... (string, optional)
++ color: `#112233` (string)
+
+### EditTagEvent (object)
++ eventType: EditTagEvent (string)
++ uuid: `8d35e73e-a7d6-4fb7-9cc0-6379ea56cf46` (string)
++ path: [] (array[string])
++ tagUuid: `11f5a195-226d-4e67-93df-665874a962a2` (string)
++ name: Data Science (string)
++ description: ... (string, optional)
++ color: `#112233` (string)
+
+### DeleteTagEvent (object)
++ eventType: DeleteTagEvent (string)
++ uuid: `e469649d-5847-4f8b-bb5f-5758b33cca2b` (string)
++ path: [] (array[string])
++ tagUuid: `11f5a195-226d-4e67-93df-665874a962a2` (string)
++ name: Data Science (string)
++ description: ... (string)
++ color: `#112233` (string)
+
 ## Filled Knowledge Model Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 ### FilledKnowledgeModel (object)
@@ -1096,6 +1129,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 ### KnowledgeModel (object)
 + uuid: `6c46a7fc-918e-4195-88be-b146b628c0c8` (string)
 + name: My Knowledge Model (string)
++ tags (array[Tag])
 + chapters (array[Chapter])
 
 ### Chapter (object)
@@ -1110,6 +1144,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + title: `First Question` (string)
 + text: `Some descriptive content of this question` (string)
 + requiredLevel: 2 (number)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
 + answers (array[Answer], optional)
 + answerItemTemplate (AnswerItemTemplate, optional)
 + references (array[Reference])
@@ -1173,6 +1208,12 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + uuid: `00b434f8-b39f-45b2-b712-89eacbcc0af8` (string)
 + measure: 0.8 (number)
 + weight: 0.5 (number)
+
+### Tag (object)
++ uuid: `+ abbreviation: F (string)` (string)
++ name: Data Science (string)
++ description: ... (string)
++ color: `#112233` (string)
 
 
 ## Level Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
