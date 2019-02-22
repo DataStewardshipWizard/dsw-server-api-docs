@@ -716,6 +716,33 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     + Attributes (array[Level])
     
 
+## Group Knowledge Model
+
+### Knowledge Models Collection [/knowledge-models]
+
+#### Get a preview [POST /preview]
+
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+    
+    + Attributes (KnowledgeModelChange)
+
++ Response 200 (application/json)
+
+    + Attributes (KnowledgeModel)
+    
+
 # Data Structures
 
 ## Action Key Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -741,11 +768,19 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 ## Branch Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+### BranchState (enum[string])
++ `Default`
++ `Edited`
++ `Outdated`
++ `Migrating`
++ `Migrated`
+
 ### Branch (object)
 + uuid: `7c70be8c-b6c3-4dd8-8701-3e1e0e6730da` (string)
 + name: My customization (string)
 + organizationId: `cz.cvut.fit` (string)
 + kmId: root (string)
++ stateType (BranchState)
 + parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
 + lastAppliedParentPackageId: `cz.cvut:common:1.0.0` (string, optional)
 + owner: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
@@ -755,27 +790,25 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 ### BranchChange (object)
 + name: My customization (string)
 + kmId: root (string)
++ events (array[Event])
+
+### BranchCreate (object)
++ name: My customization (string)
++ kmId: root (string)
 + parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
 
-### BranchWithState (object)
+### BranchDetail (object)
 + uuid: `7c70be8c-b6c3-4dd8-8701-3e1e0e6730da` (string)
 + name: My customization (string)
 + organizationId: `cz.cvut.fit` (string)
 + kmId: root (string)
++ stateType (BranchState)
 + parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
-+ branchState (BranchState)
 + lastAppliedParentPackageId: `cz.cvut:common:1.0.0` (string, optional)
 + owner: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
++ events (array[Event])
 + createdAt: `2018-06-27T16:24:12Z` (string)
 + updatedAt: `2018-06-27T16:24:12Z` (string)
-
-
-### BranchState (enum[string])
-+ `Default`
-+ `Edited`
-+ `Outdated`
-+ `Migrating`
-+ `Migrated`
 
 
 ## Data Management Plan Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -860,8 +893,14 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + path: [] (array[string])
 + chapterUuid: `4ec7611b-0392-4602-9302-dfcb79654d24` (string)
 
-### AddQuestionEvent (object)
+### AddQuestionEvent (enum)
++ (AddOptionsQuestionEvent)
++ (AddListQuestionEvent)
++ (AddValueQuestionEvent)
+
+### AddOptionsQuestionEvent (object)
 + eventType: AddQuestionEvent (string)
++ questionType: OptionsQuestion (string)
 + uuid: `c44f5317-882b-4e54-8403-f2a791ac9492` (string)
 + path: [] (array[string])
 + questionUuid: `44cd1310-3c99-4e5e-9036-dda31300f510` (string)
@@ -870,10 +909,41 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + text: `Some descriptive content of this question` (string, optional)
 + requiredLevel: 2 (number, optional)
 + tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
-+ answerItemTemplate (AnswerItemTemplatePlain, optional)
 
-### EditQuestionEvent (object)
+### AddListQuestionEvent (object)
++ eventType: AddQuestionEvent (string)
++ questionType: ListQuestion (string)
++ uuid: `c44f5317-882b-4e54-8403-f2a791ac9492` (string)
++ path: [] (array[string])
++ questionUuid: `44cd1310-3c99-4e5e-9036-dda31300f510` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string, optional)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ itemTemplateTitle: Title (string)
+
+### AddValueQuestionEvent (object)
++ eventType: AddQuestionEvent (string)
++ questionType: ValueQuestion (string)
++ uuid: `c44f5317-882b-4e54-8403-f2a791ac9492` (string)
++ path: [] (array[string])
++ questionUuid: `44cd1310-3c99-4e5e-9036-dda31300f510` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string, optional)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ valueType (QuestionValueType)
+
+### EditQuestionEvent (enum)
++ (EditOptionsQuestionEvent)
++ (EditListQuestionEvent)
++ (EditValueQuestionEvent)
+
+### EditOptionsQuestionEvent (object)
 + eventType: EditQuestionEvent (string)
++ questionType: OptionsQuestion (string)
 + uuid: `4c8b9c0b-b40d-4917-8b26-d68b97f1604e` (string)
 + path: [] (array[string])
 + questionUuid: `44cd1310-3c99-4e5e-9036-dda31300f510` (string)
@@ -882,10 +952,40 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + text: `Some descriptive content of this question` (string, optional)
 + requiredLevel: 2 (number, optional)
 + tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
-+ answerItemTemplate (AnswerItemTemplatePlainWithUuids, optional)
-+ answerUuids: [] (array[string], optional)
 + expertUuids: [] (array[string])
 + referenceUuids: [] (array[string])
++ answerUuids: [] (array[string])
+
+### EditListQuestionEvent (object)
++ eventType: EditQuestionEvent (string)
++ questionType: ListQuestion (string)
++ uuid: `4c8b9c0b-b40d-4917-8b26-d68b97f1604e` (string)
++ path: [] (array[string])
++ questionUuid: `44cd1310-3c99-4e5e-9036-dda31300f510` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string, optional)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ expertUuids: [] (array[string])
++ referenceUuids: [] (array[string])
++ itemTemplateTitle: Title (string)
++ itemTemplateQuestionUuids: [] (array[string])
+
+### EditValueQuestionEvent (object)
++ eventType: EditQuestionEvent (string)
++ questionType: ValueQuestion (string)
++ uuid: `4c8b9c0b-b40d-4917-8b26-d68b97f1604e` (string)
++ path: [] (array[string])
++ questionUuid: `44cd1310-3c99-4e5e-9036-dda31300f510` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string, optional)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ expertUuids: [] (array[string])
++ referenceUuids: [] (array[string])
++ valueType (QuestionValueType)
 
 ### DeleteQuestionEvent (object)
 + eventType: DeleteQuestionEvent (string)
@@ -1002,31 +1102,11 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + targetUuid: `91ed1251-b636-4214-949a-44a322bc6981` (string)
 + description: Some link to other part of KM (string)
 
-### DeleteReferenceEvent (enum)
-+ (DeleteResourcePageReferenceEvent)
-+ (DeleteURLReferenceEvent)
-+ (DeleteCrossReferenceEvent)
-
-### DeleteResourcePageReferenceEvent (object)
-+ eventType: DeleteReferenceEvent (string)
-+ referenceType: ResourcePageReference (string)
+### DeleteReferenceEvent (object)
++ eventType: DeleteReferenceEvent (string) 
 + uuid: `505ec8cf-4cfc-41ef-9ba6-abbea078f130` (string)
 + path: [] (array[string])
 + referenceUuid: `fe962a23-bc93-4a21-abe4-d0e2c121adbe` (string)
-
-### DeleteURLReferenceEvent (object)
-+ eventType: DeleteReferenceEvent (string)
-+ referenceType: URLReference (string)
-+ uuid: `84b94573-bb44-4718-87d1-42357f10a245` (string)
-+ path: [] (array[string])
-+ referenceUuid: `54fd2ddd-fe17-4ce5-9d2a-df2fbc88c7dc` (string)
-
-### DeleteCrossReferenceEvent (object)
-+ eventType: DeleteReferenceEvent (string)
-+ referenceType: CrossReference (string)
-+ uuid: `4308a1b3-2a81-4122-8276-da98b2f5f48f` (string)
-+ path: [] (array[string])
-+ referenceUuid: `c8fec621-0aac-4fd0-a0bd-69c53983bf34` (string)
 
 ### AddTagEvent (object)
 + eventType: AddTagEvent (string)
@@ -1126,6 +1206,11 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 ## Knowledge Model Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+### KnowledgeModelChange (object)
++ packageId: `cz.cvut.fit:software-engineering:1.0.0` (string, optional)
++ events (array[Event])
++ tagUuids: [] (array[string])
+
 ### KnowledgeModel (object)
 + uuid: `6c46a7fc-918e-4195-88be-b146b628c0c8` (string)
 + name: My Knowledge Model (string)
@@ -1138,17 +1223,50 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + text: `Some descriptive content of this chapter` (string)
 + questions (array[Question])
 
-### Question (object)
-+ uuid: `df9efc61-69c3-4853-848b-9d07f4b618c4` (string)
-+ type: `QuestionTypeOptions` (string)
+### Question (enum)
++ (OptionsQuestion)
++ (ListQuestion)
++ (ValueQuestion)
+
+### OptionsQuestion (object)
++ questionType: `OptionsQuestion` (string)
++ uuid: `ceddf7b3-a979-4409-9c60-c3f1b4865a5c` (string)
 + title: `First Question` (string)
 + text: `Some descriptive content of this question` (string)
-+ requiredLevel: 2 (number)
++ requiredLevel: 2 (number, optional)
 + tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
-+ answers (array[Answer], optional)
-+ answerItemTemplate (AnswerItemTemplate, optional)
 + references (array[Reference])
 + experts (array[Expert])
++ answers (array[Answer])
+
+### ListQuestion (object)
++ questionType: `ListQuestion` (string)
++ uuid: `a549a59f-2f66-4436-be2c-a0e99f65f783` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ references (array[Reference])
++ experts (array[Expert])
++ itemTemplateTitle: Title (string)
++ itemTemplateQuestions (array[Question])
+
+### QuestionValueType (enum[string])
++ `StringValue`
++ `NumberValue`
++ `DateValue`
++ `TextValue`
+
+### ValueQuestion (object)
++ questionType: `ValueQuestion` (string)
++ uuid: `19f2bbd7-c05a-4f38-a4d5-cedff14ba1c9` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ references (array[Reference])
++ experts (array[Expert])
++ valueType (QuestionValueType)
 
 ### Answer (object)
 + uuid: `cdffeda2-4bdc-45ee-8c49-f230a5af2f68` (string)
@@ -1158,8 +1276,6 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + metricMeasures (array[MetricMeasure])
 
 ### AnswerItemTemplate (object)
-+ title: Databases (string)
-+ questions (array[Question])
 
 ### AnswerItemTemplatePlain (object)
 + title: Databases (string)
