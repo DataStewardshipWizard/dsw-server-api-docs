@@ -470,7 +470,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     + Attributes (QuestionnaireDetail)
 
 
-#### Export Questionnaire [GET /questionnaires/{questionnaireUuid}/dmp{?format}]
+#### Export Questionnaire [GET /questionnaires/{questionnaireUuid}/dmp{?format}{?templateUuid}]
     
 - **Possible failures:**
   - HTTP 400
@@ -501,6 +501,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
             + `mediawiki`
             + `epub2`
             + `epub3`
+    + templateUuid: 1i31iod (string) ... UUID of the desired template
 
 + Response 200 (application/octet-stream)
 
@@ -701,7 +702,6 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 #### List All Levels [GET]
 
-
 - **Possible failures:**
   - HTTP 401
 
@@ -722,7 +722,6 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 #### Get a preview [POST /preview]
 
-
 - **Possible failures:**
   - HTTP 400
     - Invalid JSON
@@ -742,6 +741,29 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
     + Attributes (KnowledgeModel)
     
+
+## Group Template
+
+### Templates Collection [/templates]
+
+#### List All Templates [GET]
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (array[Template])
+    
+
 
 # Data Structures
 
@@ -1449,19 +1471,10 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + packageId: `cz.cvut:common:1.0.0` (string)
 
 ### QuestionnaireChange (object)
++ name: My Questionnaire (string)
++ private: true (boolean)
 + level: 3 (number)
 + replies (array[Reply])
-
-### QuestionnaireDetail (object)
-+ uuid: `eb9db9e0-811d-4dd8-9651-e900ef7fffec` (string)
-+ name: My Questionnaire (string)
-+ level: 2 (number)
-+ package (Package)
-+ knowledgeModel (KnowledgeModel)
-+ replies (array[Reply])
-+ ownerUuid: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
-+ createdAt: `2018-06-27T16:24:12Z` (string)
-+ updatedAt: `2018-06-27T16:24:12Z` (string)
 
 ### Questionnaire (object)
 + uuid: `eb9db9e0-811d-4dd8-9651-e900ef7fffec` (string)
@@ -1470,6 +1483,18 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + private: true (boolean)
 + package (Package)
 + ownerUuid: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
++ createdAt: `2018-06-27T16:24:12Z` (string)
++ updatedAt: `2018-06-27T16:24:12Z` (string)
+
+### QuestionnaireDetail (object)
++ uuid: `eb9db9e0-811d-4dd8-9651-e900ef7fffec` (string)
++ name: My Questionnaire (string)
++ level: 2 (number)
++ private: true (boolean)
++ package (Package)
++ ownerUuid: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
++ knowledgeModel (KnowledgeModel)
++ replies (array[Reply])
 + createdAt: `2018-06-27T16:24:12Z` (string)
 + updatedAt: `2018-06-27T16:24:12Z` (string)
 
@@ -1519,6 +1544,15 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + chapterReports (array[ChapterReport])
 + createdAt: `2018-06-27T16:24:12Z` (string)
 + updatedAt: `2018-06-27T16:24:12Z` (string)
+
+
+## Template Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### Template (object)
++ uuid: `eb106263-0c42-4655-bdb0-9587342b10ff` (string)
++ name: Common DMP Template (string)
++ rootFile: root.html.j2 (string)
+
 
 
 ## Token Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
