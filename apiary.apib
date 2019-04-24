@@ -764,8 +764,32 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     + Attributes (array[Template])
     
 
+## Group Typehints
+
+### Typehints Collection [/typehints]
+
+#### Retrieve All Typehints [POST]
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+    
+    + Attributes (TypehintRequest)
+
++ Response 200 (application/json)
+
+    + Attributes (array[Typehint])
+    
 
 # Data Structures
+
 
 ## Action Key Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -874,6 +898,9 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + (AddTagEvent)
 + (EditTagEvent)
 + (DeleteTagEvent)
++ (AddIntegrationEvent)
++ (EditIntegrationEvent)
++ (DeleteIntegrationEvent)
 
 ### AddKnowledgeModelEvent (object)
 + eventType: AddKnowledgeModelEvent (string)
@@ -888,8 +915,9 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + path: [] (array[string])
 + kmUuid: `9219c5d5-5f0c-4465-864a-46846f65581f ` (string)
 + name: My First Knowledge Model (string)
-+ tagUuids: [] (array[string])
 + chapterUuids: [] (array[string])
++ tagUuids: [] (array[string])
++ integrationUuids: [] (array[string])
 
 ### AddChapterEvent (object)
 + eventType: AddChapterEvent (string)
@@ -919,6 +947,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + (AddOptionsQuestionEvent)
 + (AddListQuestionEvent)
 + (AddValueQuestionEvent)
++ (AddIntegrationQuestionEvent)
 
 ### AddOptionsQuestionEvent (object)
 + eventType: AddQuestionEvent (string)
@@ -958,10 +987,26 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
 + valueType (QuestionValueType)
 
+### AddIntegrationQuestionEvent (object)
++ eventType: AddQuestionEvent (string)
++ questionType: IntegrationQuestion (string)
++ uuid: `6567536c-91a5-4890-be2d-bbe4c38ddcb6` (string)
++ path: [] (array[string])
++ questionUuid: `0eb21bdf-07b8-4c90-bf08-48dbef37680e` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string, optional)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ integrationUuid: `60528d86-d8b2-40ae-bf89-3bc44cdc711a` (string)
++ props (object)
+    + domain: dog (string)
+
 ### EditQuestionEvent (enum)
 + (EditOptionsQuestionEvent)
 + (EditListQuestionEvent)
 + (EditValueQuestionEvent)
++ (EditIntegrationQuestionEvent)
 
 ### EditOptionsQuestionEvent (object)
 + eventType: EditQuestionEvent (string)
@@ -1008,6 +1053,21 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + expertUuids: [] (array[string])
 + referenceUuids: [] (array[string])
 + valueType (QuestionValueType)
+
+### EditIntegrationQuestionEvent (object)
++ eventType: AddQuestionEvent (string)
++ questionType: IntegrationQuestion (string)
++ uuid: `ed9e2d92-78fd-46de-9718-d649de263b62` (string)
++ path: [] (array[string])
++ questionUuid: `09800c8c5-2e01-4f47-a553-fd8ccec32233` (string)
++ type: `QuestionTypeOptions` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string, optional)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ integrationUuid: `60528d86-d8b2-40ae-bf89-3bc44cdc711a` (string)
++ props (object)
+    + domain: dog (string)
 
 ### DeleteQuestionEvent (object)
 + eventType: DeleteQuestionEvent (string)
@@ -1157,12 +1217,73 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + description: ... (string)
 + color: `#112233` (string)
 
+### AddIntegrationEvent (object)
++ eventType: AddIntegrationEvent (string)
++ uuid: `92b8c8c0-76d1-4949-9694-15b60384d43b` (string)
++ path: [] (array[string])
++ integrationUuid: `0fd8bada-3acb-4c5f-a679-ce72d5c394d8` (string)
++ name: Data Science (string)
++ description: ... (string)
++ color: `#112233` (string)
++ uuid: `0fd8bada-3acb-4c5f-a679-ce72d5c394d8` (string)
++ id: ontologyPortal (string)
++ name: Ontology Portal (string)
++ props (array[string])
+    - domain
+    - country 
++ logo: `some-base64-encoded-image` (string)
++ requestMethod: GET (string)
++ requestUrl: `${baseurl}/ontology-portal.json?domain=${domain}&country=${country}&q=${q}` (string)
++ requestHeaders (object)
++ requestBody: `{}` (string)
++ responseListField: `nested.results` (string)
++ responseIdField: id (string)
++ responseNameField: name (string)
++ itemUrl: `https://example.com/ontologies/${id}` (string)
+
+### EditIntegrationEvent (object)
++ eventType: EditIntegrationEvent (string)
++ uuid: `3d4f68a8-eadb-4501-ba81-e186358c8611` (string)
++ path: [] (array[string])
++ integrationUuid: `0fd8bada-3acb-4c5f-a679-ce72d5c394d8` (string)
++ name: Data Science (string)
++ description: ... (string)
++ color: `#112233` (string)
++ uuid: `0fd8bada-3acb-4c5f-a679-ce72d5c394d8` (string)
++ id: ontologyPortal (string)
++ name: Ontology Portal (string)
++ props (array[string])
+    - domain
+    - country 
++ logo: `some-base64-encoded-image` (string)
++ requestMethod: GET (string)
++ requestUrl: `${baseurl}/ontology-portal.json?domain=${domain}&country=${country}&q=${q}` (string)
++ requestHeaders (object)
++ requestBody: `{}` (string)
++ responseListField: `nested.results` (string)
++ responseIdField: id (string)
++ responseNameField: name (string)
++ itemUrl: `https://example.com/ontologies/${id}` (string)
+
+### DeleteIntegrationEvent (object)
++ eventType: DeleteIntegrationEvent (string)
++ uuid: `ccc0a8f9-6d26-4574-b3ec-f6ae2bc25072` (string)
++ path: [] (array[string])
++ tagUuid: `11f5a195-226d-4e67-93df-665874a962a2` (string)
++ name: Data Science (string)
++ description: ... (string)
++ color: `#112233` (string)
+
+
 ## Filled Knowledge Model Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 ### FilledKnowledgeModel (object)
 + uuid: `3a48fad4-0a8b-4efb-b7b0-1e0f539708f9` (string)
 + name: My Knowledge Model (string)
++ humanIdentifier: II (string)
 + chapters (array[FilledChapter])
++ tags (array[Tag])
++ integrations (array[Integration])
 
 ### FilledChapter (object)
 + uuid: `0fc4d2e6-1fb9-4e98-a243-25c0e9ad6234` (string)
@@ -1170,29 +1291,78 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + text: `Some descriptive content of this chapter` (string)
 + questions (array[FilledQuestion])
 
-### FilledQuestion (object)
-+ uuid: `4ce0414d-7d1d-47cd-82b0-7774b63ba3da` (string)
-+ type: `QuestionTypeOptions` (string)
+### FilledQuestion (enum)
++ (FilledOptionsQuestion)
++ (FilledListQuestion)
++ (FilledValueQuestion)
++ (FilledIntegrationQuestion)
+
+### FilledOptionsQuestion (object)
++ questionType: `OptionsQuestion` (string)
++ uuid: `ceddf7b3-a979-4409-9c60-c3f1b4865a5c` (string)
++ humanIdentifier: 1 (string)
 + title: `First Question` (string)
 + text: `Some descriptive content of this question` (string)
-+ requiredLevel: 2 (number)
-+ answerItemTemplate (AnswerItemTemplate, optional)
-+ answers (array[Answer], optional)
-+ answerValue (string, optional)
-+ answerOption (FilledAnswer, optional)
-+ answerItems (FilledAnswerItem, optional)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
 + references (array[Reference])
 + experts (array[Expert])
++ answers (array[FilledAnswer])
++ answerOption (FilledAnswer, optional)
+
+### FilledListQuestion (object)
++ questionType: `ListQuestion` (string)
++ uuid: `a549a59f-2f66-4436-be2c-a0e99f65f783` (string)
++ humanIdentifier: 1 (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ references (array[Reference])
++ experts (array[Expert])
++ itemTemplateTitle: Title (string)
++ itemTemplateQuestions (array[FilledQuestion])
++ items (array[FilledAnswerItem], optional)
+
+### FilledValueQuestion (object)
++ questionType: `ValueQuestion` (string)
++ uuid: `19f2bbd7-c05a-4f38-a4d5-cedff14ba1c9` (string)
++ humanIdentifier: 1 (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ references (array[Reference])
++ experts (array[Expert])
++ valueType (QuestionValueType)
++ answerValue (string, optional)
+
+### FilledIntegrationQuestion (object)
++ questionType: `IntegrationQuestion` (string)
++ uuid: `7318d539-cbe5-437c-a08f-9bc0344b86a0` (string)
++ humanIdentifier: 1 (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ references (array[Reference])
++ experts (array[Expert])
++ integrationUuid: `9ea64a5a-cc7e-49de-858d-be901e19093f` (string)
++ props (object)
+    + domain: dog (string)
++ answerIntId (string, optional)
++ answerValue (string, optional)
 
 ### FilledAnswer (object)
 + uuid: `ee96cd8f-e761-454a-89a0-65548f4960e1` (string)
++ humanIdentifier: 1 (string)
 + label: First advice (string)
 + advice: Some helpful comment (string)
 + followUps (array[FilledQuestion])
 + metricMeasures (array[MetricMeasure])
 
 ### FilledAnswerItem (object)
-+ uuid: `ee96cd8f-e761-454a-89a0-65548f4960e1` (string)
++ humanIdentifier: `1.a` (string)
 + title: MongoDB (string)
 + value: 10GB (string)
 + questions (array[FilledQuestion])
@@ -1236,8 +1406,9 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 ### KnowledgeModel (object)
 + uuid: `6c46a7fc-918e-4195-88be-b146b628c0c8` (string)
 + name: My Knowledge Model (string)
-+ tags (array[Tag])
 + chapters (array[Chapter])
++ tags (array[Tag])
++ integrations (array[Integration])
 
 ### Chapter (object)
 + uuid: `c5b07143-9d31-40c3-bc68-46cffc939c5b` (string)
@@ -1249,6 +1420,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + (OptionsQuestion)
 + (ListQuestion)
 + (ValueQuestion)
++ (IntegrationQuestion)
 
 ### OptionsQuestion (object)
 + questionType: `OptionsQuestion` (string)
@@ -1270,7 +1442,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
 + references (array[Reference])
 + experts (array[Expert])
-+ itemTemplateTitle: Title (string)
++ itemTemplateTitle: Some title (string)
 + itemTemplateQuestions (array[Question])
 
 ### QuestionValueType (enum[string])
@@ -1290,21 +1462,25 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + experts (array[Expert])
 + valueType (QuestionValueType)
 
+### IntegrationQuestion (object)
++ questionType: `IntegrationQuestion` (string)
++ uuid: `7318d539-cbe5-437c-a08f-9bc0344b86a0` (string)
++ title: `First Question` (string)
++ text: `Some descriptive content of this question` (string)
++ requiredLevel: 2 (number, optional)
++ tagUuids: [`1f8dcefc-d57f-40f0-8b8f-50fd0b3cce1f`] (array[string])
++ references (array[Reference])
++ experts (array[Expert])
++ integrationUuid: `9ea64a5a-cc7e-49de-858d-be901e19093f` (string)
++ props (object)
+    + domain: dog (string)
+
 ### Answer (object)
 + uuid: `cdffeda2-4bdc-45ee-8c49-f230a5af2f68` (string)
 + label: First advice (string)
 + advice: Some helpful comment (string)
 + followUps (array[Question])
 + metricMeasures (array[MetricMeasure])
-
-### AnswerItemTemplate (object)
-
-### AnswerItemTemplatePlain (object)
-+ title: Databases (string)
-
-### AnswerItemTemplatePlainWithUuids (object)
-+ title: Databases (string)
-+ questionUuids: [] (array[string])
 
 ### Expert (object)
 + uuid: `5009a311-a19f-4d05-bd24-fa3237416fe4` (string)
@@ -1348,11 +1524,31 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + weight: 0.5 (number)
 
 ### Tag (object)
-+ uuid: `+ abbreviation: F (string)` (string)
++ uuid: `56aef441-cde6-4690-9ff4-7987d7cee9dc` (string)
 + name: Data Science (string)
 + description: ... (string)
 + color: `#112233` (string)
 
+### Integration (object)
++ uuid: `0fd8bada-3acb-4c5f-a679-ce72d5c394d8` (string)
++ name: Data Science (string)
++ description: ... (string)
++ color: `#112233` (string)
++ uuid: `0fd8bada-3acb-4c5f-a679-ce72d5c394d8` (string)
++ id: ontologyPortal (string)
++ name: Ontology Portal (string)
++ props (array[string])
+    - domain
+    - country 
++ logo: `some-base64-encoded-image` (string)
++ requestMethod: GET (string)
++ requestUrl: `${baseurl}/ontology-portal.json?domain=${domain}&country=${country}&q=${q}` (string)
++ requestHeaders (object)
++ requestBody: `{}` (string)
++ responseListField: `nested.results` (string)
++ responseIdField: id (string)
++ responseNameField: name (string)
++ itemUrl: `https://example.com/ontologies/${id}` (string)
 
 ## Knowledge Model Bundle Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -1366,7 +1562,7 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + packages (array[Package])
 
 
-## Level Section |||||||||||||||||||||||||||||||||||||||||||||||||||||mo||||||||||||||
+## Level Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 ### Level (object)
 + level: 1 (number)
@@ -1554,7 +1750,6 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + rootFile: root.html.j2 (string)
 
 
-
 ## Token Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 ### TokenCreate (object)
@@ -1563,6 +1758,19 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 ### Token (object)
 + name: jij23ioin23.br34htjdsuis.df789323n23jn2 (string)
+
+
+## Typehint Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### Typehint (object)
++ id: `op-p000001` (string)
++ name: Life Science Ontology (string)
++ url: https://example.com/${id} (string)
+
+### TypehintRequest (object)
++ packageId: `cz.cvut.fit:software-engineering:1.0.0` (string)
++ questionUuid: `4388ac64-e310-416a-beba-df84edc128a1` (string)
++ q: dog (string)
 
 
 ## User Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
