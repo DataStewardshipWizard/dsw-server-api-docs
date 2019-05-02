@@ -15,6 +15,17 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
     + Attributes (Info)
 
 
+## Group Configuration
+
+### Configuration Endpoint [/configuration]
+
+#### Get configuration for a client app [GET]
+
++ Response 200 (application/json)
+
+    + Attributes (ClientConfig)
+
+
 ## Group Token
 
 ### Token Endpoint [/tokens]
@@ -868,6 +879,19 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 + report (Report)
 + createdAt: `2018-06-27T16:24:12Z` (string)
 + updatedAt: `2018-06-27T16:24:12Z` (string)
+
+## Config Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### ClientConfig (object)
++ feedbackEnabled: true (boolean)
++ registrationEnabled: true (boolean)
++ publicQuestionnaireEnabled: true (boolean)
++ client (object)
+  + welcomeWarning: This is just a demo app (string, optional)
+  + appTitleShort: DSW (string, optional)
+  + appTitle: Data Stewardship Wizard (string, optional)
+  + welcomeInfo: Welcome to Data Stewardship Wizard (string, optional)
+
 
 ## Error Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
