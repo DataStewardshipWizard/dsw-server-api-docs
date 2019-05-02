@@ -17,9 +17,16 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 
 ## Group Configuration
 
-### Configuration Endpoint [/configuration]
+### Configuration Endpoint [/configuration?{callback}]
 
 #### Get configuration for a client app [GET]
+
+This endpoint is a JSONP endpoint. 
+
+If you do not provide a function name in a callback query parameter, the function name 'callback' will be used.
+
++ Parameters
+    + callback: myFunction (string) ... A name of a callback function for JSONP
 
 + Response 200 (application/json)
 
