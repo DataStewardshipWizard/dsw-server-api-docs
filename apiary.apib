@@ -451,6 +451,7 @@ If you do not provide a function name in a callback query parameter, the functio
   - HTTP 401
   - HTTP 403
     - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
   - HTTP 404
     - Questionnaire doesn't exist
 
@@ -473,6 +474,7 @@ If you do not provide a function name in a callback query parameter, the functio
   - HTTP 401
   - HTTP 403
     - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
   - HTTP 404
     - Questionnaire doesn't exist
 
@@ -496,6 +498,7 @@ If you do not provide a function name in a callback query parameter, the functio
   - HTTP 401
   - HTTP 403
     - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
   - HTTP 404
     - Questionnaire doesn't exist
   - HTTP 500
@@ -535,6 +538,7 @@ If you do not provide a function name in a callback query parameter, the functio
   - HTTP 401
   - HTTP 403
     - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
   - HTTP 404
     - Questionnaire doesn't exist
 
@@ -558,6 +562,7 @@ If you do not provide a function name in a callback query parameter, the functio
   - HTTP 401
   - HTTP 403
     - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
   - HTTP 404
     - Questionnaire doesn't exist
 
@@ -577,6 +582,7 @@ If you do not provide a function name in a callback query parameter, the functio
   - HTTP 401
   - HTTP 403
     - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
   - HTTP 404
     - Questionnaire doesn't exist
     
@@ -1692,6 +1698,11 @@ If you do not provide a function name in a callback query parameter, the functio
 
 ## Questionnaire Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
+### QuestionnaireAccessibility (enum[string])
++ `PublicQuestionnaire`
++ `PrivateQuestionnaire`
++ `QuestionnaireAccessibility`
+
 ### QuestionnaireCreate (object)
 + name: My Questionnaire (string)
 + level: 2 (number)
@@ -1699,7 +1710,7 @@ If you do not provide a function name in a callback query parameter, the functio
 
 ### QuestionnaireChange (object)
 + name: My Questionnaire (string)
-+ private: true (boolean)
++ accessibility (QuestionnaireAccessibility)
 + level: 3 (number)
 + replies (array[Reply])
 
@@ -1707,7 +1718,7 @@ If you do not provide a function name in a callback query parameter, the functio
 + uuid: `eb9db9e0-811d-4dd8-9651-e900ef7fffec` (string)
 + name: My Questionnaire (string)
 + level: 1 (number)
-+ private: true (boolean)
++ accessibility (QuestionnaireAccessibility)
 + package (Package)
 + ownerUuid: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
 + createdAt: `2018-06-27T16:24:12Z` (string)
@@ -1717,7 +1728,7 @@ If you do not provide a function name in a callback query parameter, the functio
 + uuid: `eb9db9e0-811d-4dd8-9651-e900ef7fffec` (string)
 + name: My Questionnaire (string)
 + level: 2 (number)
-+ private: true (boolean)
++ accessibility (QuestionnaireAccessibility)
 + package (Package)
 + ownerUuid: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
 + knowledgeModel (KnowledgeModel)
