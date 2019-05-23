@@ -4,15 +4,50 @@ HOST: http://private-6f6d1-dsw.apiary-mock.com
 # DSW Server API Docs
 
 
-## Group Info
+## Group Root
 
-### Info Endpoint [/info]
+### Root Endpoint [/]
 
 #### Get information about running application [GET]
 
 + Response 200 (application/json)
 
     + Attributes (Info)
+
+
+## Group Action Keys
+
+### Action Keys Collection [/action-keys]
+
+#### Create Action Key [POST]
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+
++ Request (application/json)
+
+    + Attributes (ActionKey)
+
++ Response 201 (application/json)
+
+
+## Group Book References
+
+### Book Reference [/book-references/{brShortUuid}]
+
+#### Get detail of Book Reference [GET]
+
+- **Possible failures:**
+  - HTTP 404
+  
++ Parameters
+    + brShortUuid (string) ... Short uuid of book reference
+
++ Response 200 (application/json)
+
+    + Attributes (BookReference)
 
 
 ## Group Configuration
@@ -33,26 +68,154 @@ If you do not provide a function name in a callback query parameter, the functio
     + Attributes (ClientConfig)
 
 
-## Group Token
+## Group Feedbacks
 
-### Token Endpoint [/tokens]
+### Feedbacks Collection [/feedbacks]
 
-#### Get token [POST]
+#### List All Feedbacks [GET]
+
+- **Possible failures:**
+  - HTTP 401
+    
++ Request
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (array[Feedback])
+
+
+#### Create a New Feedback [POST]
 
 - **Possible failures:**
   - HTTP 400
     - Invalid JSON
     - Missing required property
-    - Incorrect email or password
-    - Non-active account
+  - HTTP 401
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
 + Request (application/json)
 
-    + Attributes (TokenCreate)
+    + Attributes (FeedbackCreate)
 
 + Response 201 (application/json)
 
-    + Attributes (Token)
+    + Attributes (Feedback)
+
+### Feedback Synchronization [/feedbacks/synchronization]
+
+#### Synchronization local feedbacks in database with current state on GitHub  [GET]
+
+- For authorization it should be used a service token defined in application configuration
+
+- **Possible failures:**
+  - HTTP 401
+    
++ Request
+
+    + Headers
+    
+            Authorization: Bearer huhui3h12u2h3ui1h23uidf789323n23jn2
+
++ Response 204
+
+
+### Feedback [/feedbacks/{feedbackUuid}]
+
+#### Get detail of Feedback [GET]
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 404
+    - Feedback doesn't exist
+    
++ Parameters
+    + feedbackUuid (string) ... UUID of the feedback
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (Feedback)
+    
+
+## Group Knowledge Model
+
+### Knowledge Models Collection [/knowledge-models]
+
+#### Get a preview [POST /preview]
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+    
+    + Attributes (KnowledgeModelChange)
+
++ Response 200 (application/json)
+
+    + Attributes (KnowledgeModel)
+    
+
+## Group Levels
+
+### Levels Collection [/levels]
+
+#### List All Levels [GET]
+
+- **Possible failures:**
+  - HTTP 401
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (array[Level])
+        
+
+## Group Metrics
+
+### Metrics Collection [/metrics]
+
+#### List All Metrics [GET]
+
+
+- **Possible failures:**
+  - HTTP 401
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (array[Metric])
 
 
 ## Group Organization
@@ -98,6 +261,284 @@ If you do not provide a function name in a callback query parameter, the functio
 + Response 200 (application/json)
 
     + Attributes (Organization)
+
+
+## Group Questionnaires
+
+### Questionnaires Collection [/questionnaires]
+
+#### List All Questionnaires [GET]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+
++ Response 200 (application/json)
+
+    + Attributes (array[Questionnaire])
+
+#### Create a New Questionnaire [POST]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+  - HTTP 404
+    - Package doesn't exist
+
++ Request (application/json)
+
+    + Attributes (QuestionnaireCreate)
+
++ Response 201 (application/json)
+
+    + Attributes (Questionnaire)
+
+### Questionnaire Public [/questionnaires/public]
+
+#### Get public example ofquestionnaire [GET]
+
+- **Possible failures:**
+  - HTTP 404
+    - Questionnaire doesn't exist
+
++ Response 200 (application/json)
+
+    + Attributes (QuestionnaireDetail)
+        
+
+### Questionnaire [/questionnaires/{questionnaireUuid}]
+
+#### Get detail of Questionnaire [GET]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
+  - HTTP 404
+    - Questionnaire doesn't exist
+
++ Parameters
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
+
++ Response 200 (application/json)
+
+    + Attributes (QuestionnaireDetail)
+        
+
+#### Update Questionnaire [PUT /questionnaires/{questionnaireUuid}]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
+  - HTTP 404
+    - Questionnaire doesn't exist
+
++ Parameters
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
+    
++ Request (application/json)
+
+    + Attributes (QuestionnaireChange)
+
++ Response 200 (application/json)
+
+    + Attributes (QuestionnaireDetail)
+
+
+#### Export Questionnaire [GET /questionnaires/{questionnaireUuid}/dmp{?format}{?templateUuid}]
+    
+- **Possible failures:**
+  - HTTP 400
+    - DMP Format is not currently supported
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
+  - HTTP 404
+    - Questionnaire doesn't exist
+  - HTTP 500
+    - Couldn't transform to desired document format
+
++ Parameters
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
+    + format: pdf (enum[string]) ... Desired document format
+      + Members
+            + `json`
+            + `html`
+            + `latex`
+            + `markdown`
+            + `docx`
+            + `odt`
+            + `pdf`
+            + `rtf`
+            + `rst`
+            + `asciidoc`
+            + `dokuwiki`
+            + `mediawiki`
+            + `epub2`
+            + `epub3`
+    + templateUuid: 1i31iod (string) ... UUID of the desired template
+
++ Response 200 (application/octet-stream)
+
+
+#### Retrieve Preview of Questionnaire Report [POST /questionnaires/{questionnaireUuid}/report/preview]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
+  - HTTP 404
+    - Questionnaire doesn't exist
+
++ Parameters
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
+
++ Request (application/json)
+
+    + Attributes (array[QuestionnaireChange])
+
++ Response 200 (application/json)
+
+    + Attributes (Report)
+
+
+#### Get Questionnaire Report [GET /questionnaires/{questionnaireUuid}/report]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
+  - HTTP 404
+    - Questionnaire doesn't exist
+
++ Parameters
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
+
++ Response 200 (application/json)
+
+    + Attributes (Report)
+
+
+#### Delete Questionnaire [DELETE /questionnaires/{questionnaireUuid}]
+
+- **Required permissions:** QTN_PERM
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+    - You don't have access to this questionnaire
+  - HTTP 404
+    - Questionnaire doesn't exist
+    
++ Parameters
+    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
+
++ Request
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 204
+    
+
+## Group Template
+
+### Templates Collection [/templates]
+
+#### List All Templates [GET]
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (array[Template])
+
+
+## Group Token
+
+### Token Endpoint [/tokens]
+
+#### Get token [POST]
+
+- **Possible failures:**
+  - HTTP 400
+    - Invalid JSON
+    - Missing required property
+    - Incorrect email or password
+    - Non-active account
+
++ Request (application/json)
+
+    + Attributes (TokenCreate)
+
++ Response 201 (application/json)
+
+    + Attributes (Token)
+    
+
+## Group Typehints
+
+### Typehints Collection [/typehints]
+
+#### Retrieve All Typehints [POST]
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have QTN_PERM permission
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+    
+    + Attributes (TypehintRequest)
+
++ Response 200 (application/json)
+
+    + Attributes (array[Typehint])
+
 
 ## Group Users
 
@@ -370,446 +811,6 @@ If you do not provide a function name in a callback query parameter, the functio
 + Response 204
 
 
-## Group Action Keys
-
-### Action Keys Collection [/action-keys]
-
-#### Create Action Key [POST]
-
-- **Possible failures:**
-  - HTTP 400
-    - Invalid JSON
-    - Missing required property
-
-+ Request (application/json)
-
-    + Attributes (ActionKey)
-
-+ Response 201 (application/json)
-
-
-        
-## Group Questionnaires
-
-### Questionnaires Collection [/questionnaires]
-
-#### List All Questionnaires [GET]
-
-- **Required permissions:** QTN_PERM
-
-- **Possible failures:**
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-
-+ Response 200 (application/json)
-
-    + Attributes (array[Questionnaire])
-
-#### Create a New Questionnaire [POST]
-
-- **Required permissions:** QTN_PERM
-
-- **Possible failures:**
-  - HTTP 400
-    - Invalid JSON
-    - Missing required property
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-  - HTTP 404
-    - Package doesn't exist
-
-+ Request (application/json)
-
-    + Attributes (QuestionnaireCreate)
-
-+ Response 201 (application/json)
-
-    + Attributes (Questionnaire)
-
-### Questionnaire Public [/questionnaires/public]
-
-#### Get public example ofquestionnaire [GET]
-
-- **Possible failures:**
-  - HTTP 404
-    - Questionnaire doesn't exist
-
-+ Response 200 (application/json)
-
-    + Attributes (QuestionnaireDetail)
-        
-
-### Questionnaire [/questionnaires/{questionnaireUuid}]
-
-#### Get detail of Questionnaire [GET]
-
-- **Required permissions:** QTN_PERM
-
-- **Possible failures:**
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-    - You don't have access to this questionnaire
-  - HTTP 404
-    - Questionnaire doesn't exist
-
-+ Parameters
-    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
-
-+ Response 200 (application/json)
-
-    + Attributes (QuestionnaireDetail)
-        
-
-#### Update Questionnaire [PUT /questionnaires/{questionnaireUuid}]
-
-- **Required permissions:** QTN_PERM
-
-- **Possible failures:**
-  - HTTP 400
-    - Invalid JSON
-    - Missing required property
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-    - You don't have access to this questionnaire
-  - HTTP 404
-    - Questionnaire doesn't exist
-
-+ Parameters
-    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
-    
-+ Request (application/json)
-
-    + Attributes (QuestionnaireChange)
-
-+ Response 200 (application/json)
-
-    + Attributes (QuestionnaireDetail)
-
-
-#### Export Questionnaire [GET /questionnaires/{questionnaireUuid}/dmp{?format}{?templateUuid}]
-    
-- **Possible failures:**
-  - HTTP 400
-    - DMP Format is not currently supported
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-    - You don't have access to this questionnaire
-  - HTTP 404
-    - Questionnaire doesn't exist
-  - HTTP 500
-    - Couldn't transform to desired document format
-
-+ Parameters
-    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
-    + format: pdf (enum[string]) ... Desired document format
-      + Members
-            + `json`
-            + `html`
-            + `latex`
-            + `markdown`
-            + `docx`
-            + `odt`
-            + `pdf`
-            + `rtf`
-            + `rst`
-            + `asciidoc`
-            + `dokuwiki`
-            + `mediawiki`
-            + `epub2`
-            + `epub3`
-    + templateUuid: 1i31iod (string) ... UUID of the desired template
-
-+ Response 200 (application/octet-stream)
-
-
-#### Retrieve Preview of Questionnaire Report [POST /questionnaires/{questionnaireUuid}/report/preview]
-
-- **Required permissions:** QTN_PERM
-
-- **Possible failures:**
-  - HTTP 400
-    - Invalid JSON
-    - Missing required property
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-    - You don't have access to this questionnaire
-  - HTTP 404
-    - Questionnaire doesn't exist
-
-+ Parameters
-    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
-
-+ Request (application/json)
-
-    + Attributes (array[QuestionnaireChange])
-
-+ Response 200 (application/json)
-
-    + Attributes (Report)
-
-
-#### Get Questionnaire Report [GET /questionnaires/{questionnaireUuid}/report]
-
-- **Required permissions:** QTN_PERM
-
-- **Possible failures:**
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-    - You don't have access to this questionnaire
-  - HTTP 404
-    - Questionnaire doesn't exist
-
-+ Parameters
-    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
-
-+ Response 200 (application/json)
-
-    + Attributes (Report)
-
-
-#### Delete Questionnaire [DELETE /questionnaires/{questionnaireUuid}]
-
-- **Required permissions:** QTN_PERM
-
-- **Possible failures:**
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-    - You don't have access to this questionnaire
-  - HTTP 404
-    - Questionnaire doesn't exist
-    
-+ Parameters
-    + questionnaireUuid: 2j3hj4 (string) ... UUID of the Questionnaire
-
-+ Request
-
-    + Headers
-    
-            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
-
-+ Response 204
-
-
-## Group Book References
-
-### Book Reference [/book-references/{brShortUuid}]
-
-#### Get detail of Book Reference [GET]
-
-- **Possible failures:**
-  - HTTP 404
-  
-+ Parameters
-    + brShortUuid (string) ... Short uuid of book reference
-
-+ Response 200 (application/json)
-
-    + Attributes (BookReference)
-
-
-## Group Feedbacks
-
-### Feedbacks Collection [/feedbacks]
-
-#### List All Feedbacks [GET]
-
-- **Possible failures:**
-  - HTTP 401
-    
-+ Request
-
-    + Headers
-    
-            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
-
-+ Response 200 (application/json)
-
-    + Attributes (array[Feedback])
-
-
-#### Create a New Feedback [POST]
-
-- **Possible failures:**
-  - HTTP 400
-    - Invalid JSON
-    - Missing required property
-  - HTTP 401
-
-+ Request
-
-    + Headers
-    
-            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
-
-+ Request (application/json)
-
-    + Attributes (FeedbackCreate)
-
-+ Response 201 (application/json)
-
-    + Attributes (Feedback)
-
-### Feedback Synchronization [/feedbacks/synchronization]
-
-#### Synchronization local feedbacks in database with current state on GitHub  [GET]
-
-- For authorization it should be used a service token defined in application configuration
-
-- **Possible failures:**
-  - HTTP 401
-    
-+ Request
-
-    + Headers
-    
-            Authorization: Bearer huhui3h12u2h3ui1h23uidf789323n23jn2
-
-+ Response 204
-
-
-### Feedback [/feedbacks/{feedbackUuid}]
-
-#### Get detail of Feedback [GET]
-
-- **Possible failures:**
-  - HTTP 401
-  - HTTP 404
-    - Feedback doesn't exist
-    
-+ Parameters
-    + feedbackUuid (string) ... UUID of the feedback
-
-+ Request
-
-    + Headers
-    
-            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
-
-+ Response 200 (application/json)
-
-    + Attributes (Feedback)
-        
-
-## Group Metrics
-
-### Metrics Collection [/metrics]
-
-#### List All Metrics [GET]
-
-
-- **Possible failures:**
-  - HTTP 401
-
-+ Request (application/json)
-
-    + Headers
-    
-            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
-
-+ Response 200 (application/json)
-
-    + Attributes (array[Metric])
-    
-
-## Group Levels
-
-### Levels Collection [/levels]
-
-#### List All Levels [GET]
-
-- **Possible failures:**
-  - HTTP 401
-
-+ Request (application/json)
-
-    + Headers
-    
-            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
-
-+ Response 200 (application/json)
-
-    + Attributes (array[Level])
-    
-
-## Group Knowledge Model
-
-### Knowledge Models Collection [/knowledge-models]
-
-#### Get a preview [POST /preview]
-
-- **Possible failures:**
-  - HTTP 400
-    - Invalid JSON
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-
-+ Request (application/json)
-
-    + Headers
-    
-            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
-    
-    + Attributes (KnowledgeModelChange)
-
-+ Response 200 (application/json)
-
-    + Attributes (KnowledgeModel)
-    
-
-## Group Template
-
-### Templates Collection [/templates]
-
-#### List All Templates [GET]
-
-- **Possible failures:**
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-
-+ Request (application/json)
-
-    + Headers
-    
-            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
-
-+ Response 200 (application/json)
-
-    + Attributes (array[Template])
-    
-
-## Group Typehints
-
-### Typehints Collection [/typehints]
-
-#### Retrieve All Typehints [POST]
-
-- **Possible failures:**
-  - HTTP 401
-  - HTTP 403
-    - You don’t have QTN_PERM permission
-
-+ Request (application/json)
-
-    + Headers
-    
-            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
-    
-    + Attributes (TypehintRequest)
-
-+ Response 200 (application/json)
-
-    + Attributes (array[Typehint])
-    
 
 # Data Structures
 
