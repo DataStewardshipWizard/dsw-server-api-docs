@@ -440,7 +440,7 @@ If you do not provide a function name in a callback query parameter, the functio
 
     + Attributes (QuestionnaireDetail)
         
-        
+
 ### Questionnaire [/questionnaires/{questionnaireUuid}]
 
 #### Get detail of Questionnaire [GET]
@@ -596,7 +596,6 @@ If you do not provide a function name in a callback query parameter, the functio
             Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
 
 + Response 204
-
 
 
 ## Group Book References
@@ -963,7 +962,7 @@ If you do not provide a function name in a callback query parameter, the functio
 + chapterUuid: `4ec7611b-0392-4602-9302-dfcb79654d24` (string)
 + title: `First Chapter` (string)
 + text: `Some descriptive content of this chapter` (string)
-+ questions (array[FilledQuestion])
++ questions (array[Question])
 
 ### EditChapterEvent (object)
 + eventType: EditChapterEvent (string)
@@ -1587,17 +1586,6 @@ If you do not provide a function name in a callback query parameter, the functio
 + responseNameField: name (string)
 + itemUrl: `https://example.com/ontologies/${id}` (string)
 
-## Knowledge Model Bundle Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-### KnowledgeModelBundle (object)
-+ id: `cz.cvut.fit:software-engineering:1.0.0` (string)
-+ name: Software Engineering (string)
-+ organizationId: `cz.cvut.fit` (string)
-+ kmId: `software-engineering:` (string)
-+ version: `1.0.0` (string)
-+ metamodelVersion: 1 (number)
-+ packages (array[Package])
-
 
 ## Level Section |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -1654,11 +1642,6 @@ If you do not provide a function name in a callback query parameter, the functio
 
 ## Organization Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-### OrganizationChange (object)
-+ uuid: `0e795186-9733-4c60-9f03-58cea76590e1` (string)
-+ name: Elixir Amsterdam (string)
-+ groupId: elixir.nl.amsterdam (string)
-
 ### Organization (object)
 + uuid: `0e795186-9733-4c60-9f03-58cea76590e1` (string)
 + name: Elixir Amsterdam (string)
@@ -1666,8 +1649,23 @@ If you do not provide a function name in a callback query parameter, the functio
 + createdAt: `2018-06-27T16:24:12Z` (string)
 + updatedAt: `2018-06-27T16:24:12Z` (string)
 
+### OrganizationSimple (object)
++ organizationId: dsw (string)
++ name: DSW (string)
++ logo: `some-base64-encoded-image` (string, optional)
+
+### OrganizationChange (object)
++ uuid: `0e795186-9733-4c60-9f03-58cea76590e1` (string)
++ name: Elixir Amsterdam (string)
++ groupId: elixir.nl.amsterdam (string)
+
 
 ## Package Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### PackageState (enum[string])
++ `UnknownPackageState`
++ `OutdatedPackageState`
++ `UpToDatePackageState`
 
 ### Package (object)
 + id: `cz.cvut.fit:software-engineering:1.0.0` (string)
@@ -1677,23 +1675,52 @@ If you do not provide a function name in a callback query parameter, the functio
 + version: `1.0.0` (string)
 + metamodelVersion: 1 (number)
 + description: Customizations for Faculty of Information Technology (string)
++ readme: `# Root \n ## About` (string)
 + parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
++ events (array[Event])
++ createdAt: `2018-06-27T16:24:12Z` (string)
 
 ### PackageSimple (object)
++ id: `cz.cvut.fit:software-engineering:1.0.0` (string)
 + name: Software Engineering (string)
 + organizationId: `cz.cvut.fit` (string)
 + kmId: `software-engineering:` (string)
++ version: `1.0.0` (string)
++ description: Customizations for Faculty of Information Technology (string)
++ organization (OrganizationSimple, optional)
++ state (PackageState)
++ createdAt: `2018-06-27T16:24:12Z` (string)
 
-### PackageWithEvents (object)
+### PackageDetail (object)
++ id: `cz.cvut.fit:software-engineering:1.0.0` (string)
++ name: Software Engineering (string)
++ organizationId: `cz.cvut.fit` (string)
++ kmId: `software-engineering:` (string)
++ version: `1.0.0` (string)
++ description: Customizations for Faculty of Information Technology (string)
++ readme: `# Root \n ## About` (string)
++ metamodelVersion: 1 (number)
++ parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
++ versions (array[string])
+  + 1.0.0
+  + 2.0.0
++ remoteLatestVersion: 1.0.0 (string, optional)
++ organization (OrganizationSimple, optional)
++ registryLink: `https://registry.ds-wizard.org/knowledge-models/dsw:root:1.0.0` (string, optional)
++ state (PackageState)
++ createdAt: `2018-06-27T16:24:12Z` (string)
+
+
+## Package Bundle Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+### PackageBundle (object)
 + id: `cz.cvut.fit:software-engineering:1.0.0` (string)
 + name: Software Engineering (string)
 + organizationId: `cz.cvut.fit` (string)
 + kmId: `software-engineering:` (string)
 + version: `1.0.0` (string)
 + metamodelVersion: 1 (number)
-+ description: Customizations for Faculty of Information Technology (string)
-+ parentPackageId: cz.cvut:common:1.0.0 (string, optional)
-+ events (array[Event])
++ packages (array[Package])
 
 
 ## Questionnaire Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -1719,7 +1746,7 @@ If you do not provide a function name in a callback query parameter, the functio
 + name: My Questionnaire (string)
 + level: 1 (number)
 + accessibility (QuestionnaireAccessibility)
-+ package (Package)
++ package (PackageSimple)
 + ownerUuid: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
 + createdAt: `2018-06-27T16:24:12Z` (string)
 + updatedAt: `2018-06-27T16:24:12Z` (string)
@@ -1729,7 +1756,7 @@ If you do not provide a function name in a callback query parameter, the functio
 + name: My Questionnaire (string)
 + level: 2 (number)
 + accessibility (QuestionnaireAccessibility)
-+ package (Package)
++ package (PackageSimple)
 + ownerUuid: `8fdd8d82-f512-40dc-b445-25043a65dbf4` (string, optional)
 + knowledgeModel (KnowledgeModel)
 + replies (array[Reply])
@@ -1865,3 +1892,4 @@ If you do not provide a function name in a callback query parameter, the functio
 
 ### Version (object)
 + description: Some description (string)
++ readme: Some readme (string)
