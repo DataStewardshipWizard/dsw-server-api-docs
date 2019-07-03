@@ -149,7 +149,23 @@ If you do not provide a function name in a callback query parameter, the functio
 + Response 200 (application/json)
 
     + Attributes (Feedback)
+
+
+## Group IO
+
+### Export [/export/{pkgId}]
+
+#### Export Package [GET]
+
++ Parameters
     
+    + pkgId: dsw:root:1.0.0 (string) ... Package ID
+
+
++ Response 200 (application/json)
+
+    + Attributes (PackageBundle)
+
 
 ## Group Knowledge Model
 
@@ -261,6 +277,61 @@ If you do not provide a function name in a callback query parameter, the functio
 + Response 200 (application/json)
 
     + Attributes (Organization)
+
+
+## Group Package
+
+### Packages Collection [/packages/{?orgId}{?kmId}]
+
+#### List All Unique Packages [GET]
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have PM_READ_PERM permission
+
++ Parameters
+    
+    + orgId: dsw (string) ... Organization ID
+    
+    + kmId: h53j1jb (string) ... Knowledge Model ID 
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (array[PackageSimple])
+
+
+### Package Detail [/packages/{pkgId}]
+
+#### Get detail of Package [GET]
+
+- **Possible failures:**
+  - HTTP 401
+  - HTTP 403
+    - You don’t have PM_READ_PERM permission
+  - HTTP 404
+    - Package doesn't exist
+
+
++ Parameters
+    
+    + pkgId: dsw:root:1.0.0 (string) ... Package ID
+
++ Request (application/json)
+
+    + Headers
+    
+            Authorization: Bearer jij23ioin23.br34htjdsuis.df789323n23jn2
+
++ Response 200 (application/json)
+
+    + Attributes (PackageDetail)
 
 
 ## Group Questionnaires
@@ -1667,6 +1738,7 @@ If you do not provide a function name in a callback query parameter, the functio
 + `UnknownPackageState`
 + `OutdatedPackageState`
 + `UpToDatePackageState`
++ `UnpublishedPackageState`
 
 ### Package (object)
 + id: `cz.cvut.fit:software-engineering:1.0.0` (string)
@@ -1677,6 +1749,7 @@ If you do not provide a function name in a callback query parameter, the functio
 + metamodelVersion: 1 (number)
 + description: Customizations for Faculty of Information Technology (string)
 + readme: `# Root \n ## About` (string)
++ license: `# License \n ## Notes` (string)
 + parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
 + events (array[Event])
 + createdAt: `2018-06-27T16:24:12Z` (string)
@@ -1700,6 +1773,7 @@ If you do not provide a function name in a callback query parameter, the functio
 + version: `1.0.0` (string)
 + description: Customizations for Faculty of Information Technology (string)
 + readme: `# Root \n ## About` (string)
++ license: `# License \n ## Notes` (string)
 + metamodelVersion: 1 (number)
 + parentPackageId: `cz.cvut:common:1.0.0` (string, optional)
 + versions (array[string])
