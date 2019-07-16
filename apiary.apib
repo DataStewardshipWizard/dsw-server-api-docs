@@ -968,14 +968,44 @@ If you do not provide a function name in a callback query parameter, the functio
 ## Config Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 ### ClientConfig (object)
++ client (ClientConfigClient)
 + feedbackEnabled: true (boolean)
 + registrationEnabled: true (boolean)
 + publicQuestionnaireEnabled: true (boolean)
-+ client (object)
-  + welcomeWarning: This is just a demo app (string, optional)
-  + appTitleShort: DSW (string, optional)
-  + appTitle: Data Stewardship Wizard (string, optional)
-  + welcomeInfo: Welcome to Data Stewardship Wizard (string, optional)
++ levelsEnabled: true (boolean)
++ itemTitleEnabled: true (boolean)
++ questionnaireAccessibilityEnabled: true (boolean)
++ registry (ClientConfigRegistry)
+
+### ClientConfigRegistry (object)
++ enabled: true (boolean)
++ url: registry.ds-wizard.org (string)
+
+### ClientConfigClient (object)
++ url: privacy.ds-wizard.org (string)
++ appTitleShort: DSW (string, optional)
++ appTitle: Data Stewardship Wizard (string, optional)
++ welcomeWarning: This is just a demo app (string, optional)
++ welcomeInfo: Welcome to Data Stewardship Wizard (string, optional)
++ dashboard (ClientConfigClientDashboard)
++ customMenuLinks (array[ClientConfigClientCustomMenuLink])
+
+### ClientConfigClientDashboard (object)
++ admin (array[string]) 
+    - Welcome
+    - QuestionnaireList
++ dataSteward (array[string]) 
+    - Welcome
+    - QuestionnaireList
++ researcher (array[string]) 
+    - Welcome
+    - QuestionnaireList
+
+### ClientConfigClientCustomMenuLink (object)
++ icon: home (string)
++ title: Home (string)
++ url: registry.ds-wizard.org (string)
++ newWindow: true (boolean)
 
 
 ## Error Section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -1947,7 +1977,9 @@ If you do not provide a function name in a callback query parameter, the functio
 + surname: Einstein (string)
 + email: albert.einstein@example.com (string)
 + role: ADMIN (string)
-+ permissions: [UM_PERM, PM_PERM] (array[string])
++ permissions (array[string]) 
+    - UM_PERM
+    - PM_PERM
 + isActive: true (boolean)
 + createdAt: `2018-06-27T16:24:12Z` (string)
 + updatedAt: `2018-06-27T16:24:12Z` (string)
